@@ -1,11 +1,24 @@
-[gd_scene load_steps=11 format=3 uid="uid://bkwgnut0jj87f"]
+[gd_scene load_steps=13 format=3 uid="uid://bkwgnut0jj87f"]
 
-[ext_resource type="Texture2D" uid="uid://doooo4ort24hu" path="res://textures/asphalt.png" id="1_txrxv"]
+[ext_resource type="Texture2D" uid="uid://culk3omrqr6ow" path="res://textures/asphalt.png" id="1_txrxv"]
 [ext_resource type="Texture2D" uid="uid://chl6dctidprwf" path="res://textures/pavement-curb.png" id="1_wjyya"]
+[ext_resource type="Material" uid="uid://b16ueay5pqsll" path="res://materials/pavement.tres" id="2_kpmvj"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7dmvi"]
+sky_top_color = Color(0.309804, 0.443137, 0.705882, 1)
+sky_horizon_color = Color(0.501961, 0.686275, 0.764706, 1)
+ground_bottom_color = Color(0.282353, 0.54902, 0.301961, 1)
+ground_horizon_color = Color(0.278431, 0.545098, 0.301961, 1)
+ground_curve = 1.0
+
+[sub_resource type="Sky" id="Sky_ynmfm"]
+sky_material = SubResource("ProceduralSkyMaterial_7dmvi")
+radiance_size = 2
 
 [sub_resource type="Environment" id="Environment_jpa6x"]
-background_mode = 1
+background_mode = 2
 background_color = Color(0.0941176, 0.54902, 0.713726, 1)
+sky = SubResource("Sky_ynmfm")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7qeya"]
 albedo_texture = ExtResource("1_txrxv")
@@ -14,9 +27,6 @@ uv1_world_triplanar = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ibq5o"]
 albedo_color = Color(0.211765, 0.482353, 0.235294, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1jn3f"]
-albedo_color = Color(0.603922, 0.603922, 0.603922, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ey2vg"]
 
@@ -60,26 +70,29 @@ uv1_world_triplanar = true
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_jpa6x")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+[node name="Viewport" type="Node" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Viewport"]
 transform = Transform3D(0.559807, -0.825428, -0.0726918, -0.270113, -0.264715, 0.925724, -0.783361, -0.498592, -0.371148, 0, 10.463, 0)
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 1.62518, 0)
+[node name="Camera3D" type="Camera3D" parent="Viewport"]
+transform = Transform3D(1, 0, 0, 0, 0.996195, 0.0871557, 0, -0.0871557, 0.996195, 0.5, 1.625, 0)
 
 [node name="Road" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.001, -125.805)
-size = Vector3(4.4578, 0.001, 251.124)
+size = Vector3(9.458, 0.001, 251.124)
 material = SubResource("StandardMaterial3D_7qeya")
 
 [node name="Grass" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -153.188)
+visible = false
 size = Vector3(92.1732, 0.001, 306.571)
 material = SubResource("StandardMaterial3D_ibq5o")
 
 [node name="PavementL" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.483, 0.25, -127.184)
 size = Vector3(2.501, 0.3, 253.633)
-material = SubResource("StandardMaterial3D_1jn3f")
+material = ExtResource("2_kpmvj")
 metadata/_edit_group_ = true
 
 [node name="Cube2" type="MeshInstance3D" parent="PavementL"]
@@ -89,9 +102,9 @@ skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_p03fu")
 
 [node name="PavementR" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8, 0.25, -127.184)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0.25, -126.936)
 size = Vector3(2.501, 0.3, 253.633)
-material = SubResource("StandardMaterial3D_1jn3f")
+material = ExtResource("2_kpmvj")
 metadata/_edit_group_ = true
 
 [node name="Cube2" type="MeshInstance3D" parent="PavementR"]
