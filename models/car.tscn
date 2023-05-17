@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://h55mtu5guevv"]
+[gd_scene load_steps=27 format=3 uid="uid://bshxyxetsko0s"]
 
 [ext_resource type="Texture2D" uid="uid://cj0a8c4jhpd80" path="res://textures/car.png" id="1_ihkxv"]
 [ext_resource type="Script" path="res://models/car.gd" id="2_f1o5c"]
@@ -306,7 +306,7 @@ shadow_mesh = SubResource("ArrayMesh_bvji2")
 [node name="Car" type="CharacterBody3D"]
 script = ExtResource("2_f1o5c")
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Camera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.936697, 0.350142, 0, -0.350142, 0.936697, -0.136533, 1.83459, 1.51334)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

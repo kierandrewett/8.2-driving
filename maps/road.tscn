@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dkmeo23inguyl"]
+[gd_scene load_steps=13 format=3 uid="uid://bqu3t3qvbbm3n"]
 
 [ext_resource type="Texture2D" uid="uid://tfockiebrqlm" path="res://textures/road_marking.png" id="1_7il0w"]
 [ext_resource type="Texture2D" uid="uid://culk3omrqr6ow" path="res://textures/asphalt.png" id="2_isq5e"]
@@ -62,14 +62,14 @@ size = Vector3(1, 6.42419, 256.659)
 [node name="Road" type="Node"]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.280501, 0.00430799, -125.078)
-size = Vector3(0.121763, 0.002, 251.415)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.281, 0.004, -107)
+size = Vector3(0.122, 0.002, 213.39)
 material = SubResource("StandardMaterial3D_rms76")
 metadata/_edit_group_ = true
 
 [node name="Road" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.001, -125.805)
-size = Vector3(13.6398, 0.001, 251.124)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.001, -107)
+size = Vector3(13.64, 0.001, 214)
 material = SubResource("StandardMaterial3D_vguc0")
 metadata/_edit_group_ = true
 
@@ -81,13 +81,13 @@ material = SubResource("StandardMaterial3D_qly5s")
 metadata/_edit_group_ = true
 
 [node name="PavementL" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.40101, 0.25, -127.184)
-size = Vector3(2.501, 0.3, 253.633)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.401, 0.25, -107)
+size = Vector3(2.501, 0.3, 214)
 material = ExtResource("3_olrfc")
 metadata/_edit_group_ = true
 
 [node name="Cube2" type="MeshInstance3D" parent="PavementL"]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 105.89, 1.20299, -0.0378509, 20.8531)
+transform = Transform3D(0.202, 0, 0, 0, 0.202, 0, 0, 0, 107, 1.203, -0.038, 0)
 mesh = SubResource("ArrayMesh_ogcgd")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_57dwj")
@@ -100,13 +100,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.924292, 2.99092, 0)
 shape = SubResource("BoxShape3D_enjyo")
 
 [node name="PavementR" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.38517, 0.25, -126.936)
-size = Vector3(2.501, 0.3, 253.633)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.385, 0.25, -107)
+size = Vector3(2.501, 0.3, 214)
 material = ExtResource("3_olrfc")
 metadata/_edit_group_ = true
 
 [node name="Cube2" type="MeshInstance3D" parent="PavementR"]
-transform = Transform3D(-8.74228e-09, -0.2, 0, 0.2, -8.74228e-09, 0, 0, 0, 105.89, -1.43549, -0.0378509, 20.8531)
+transform = Transform3D(-8.8297e-09, -0.202, 0, 0.202, -8.8297e-09, 0, 0, 0, 107, -1.444, -0.038, 0)
 mesh = SubResource("ArrayMesh_ogcgd")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_57dwj")

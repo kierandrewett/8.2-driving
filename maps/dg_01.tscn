@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://bkwgnut0jj87f"]
+[gd_scene load_steps=6 format=3 uid="uid://bkwgnut0jj87f"]
 
 [ext_resource type="Script" path="res://maps/dg_01.gd" id="1_lc13s"]
-[ext_resource type="PackedScene" uid="uid://h55mtu5guevv" path="res://models/car.tscn" id="1_mj8xh"]
-[ext_resource type="PackedScene" uid="uid://dkmeo23inguyl" path="res://maps/road.tscn" id="3_26fgq"]
+[ext_resource type="PackedScene" uid="uid://bqu3t3qvbbm3n" path="res://maps/road.tscn" id="3_26fgq"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7dmvi"]
 sky_top_color = Color(0.309804, 0.443137, 0.705882, 1)
@@ -30,8 +29,5 @@ environment = SubResource("Environment_jpa6x")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Viewport"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 10.463, 0)
-
-[node name="Car" parent="." instance=ExtResource("1_mj8xh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.88802, 2.34547, -1.41412)
 
 [node name="Road" parent="." instance=ExtResource("3_26fgq")]
