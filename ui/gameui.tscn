@@ -1,6 +1,14 @@
-[gd_scene load_steps=10 format=3 uid="uid://bouxkwjcpvs4a"]
+[gd_scene load_steps=13 format=3 uid="uid://bouxkwjcpvs4a"]
 
 [ext_resource type="Script" path="res://ui/gameui.gd" id="1_5brjb"]
+[ext_resource type="Script" path="res://ui/gameui_console.gd" id="2_yb7b5"]
+
+[sub_resource type="Gradient" id="Gradient_m6yfn"]
+interpolation_mode = 2
+colors = PackedColorArray(0, 0, 0, 0.737255, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_gftoo"]
+gradient = SubResource("Gradient_m6yfn")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iy7lc"]
 
@@ -26,6 +34,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_5brjb")
+
+[node name="TextureRect" type="TextureRect" parent="." groups=["window_xy"]]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_gftoo")
 
 [node name="MarginContainer" type="MarginContainer" parent="." groups=["window_xy"]]
 layout_mode = 1
@@ -95,4 +112,67 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_v6t0d")
 text = "Quit Game"
 alignment = 0
 
+[node name="Console" type="Window" parent="."]
+title = "Console"
+position = Vector2i(100, 100)
+size = Vector2i(600, 400)
+visible = false
+always_on_top = true
+popup_window = true
+min_size = Vector2i(100, 100)
+theme_override_constants/resize_margin = 16
+script = ExtResource("2_yb7b5")
+
+[node name="ColorRect" type="ColorRect" parent="Console"]
+offset_top = -24.0
+offset_right = 100.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.52549, 0.188235, 0.266667, 1)
+
+[node name="ConsoleContainer" type="VBoxContainer" parent="Console"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+alignment = 2
+
+[node name="ConsoleTextContainer" type="Control" parent="Console/ConsoleContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect" type="ColorRect" parent="Console/ConsoleContainer/ConsoleTextContainer"]
+layout_mode = 2
+offset_top = -12.0
+offset_right = 100.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.560784, 0.188235, 0.25098, 1)
+
+[node name="ConsoleText" type="RichTextLabel" parent="Console/ConsoleContainer/ConsoleTextContainer"]
+clip_contents = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+focus_mode = 2
+scroll_following = true
+selection_enabled = true
+
+[node name="ConsoleInput" type="LineEdit" parent="Console/ConsoleContainer"]
+custom_minimum_size = Vector2(100, 28)
+layout_mode = 2
+clear_button_enabled = true
+select_all_on_focus = true
+
 [connection signal="pressed" from="MarginContainer/BoxContainer/BoxContainer/Button" to="." method="on_start_game_pressed"]
+[connection signal="gui_input" from="Console/ConsoleContainer/ConsoleInput" to="Console" method="on_input"]
+[connection signal="text_submitted" from="Console/ConsoleContainer/ConsoleInput" to="Console" method="on_text_submitted"]

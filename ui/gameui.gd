@@ -3,7 +3,6 @@ extends Control
 func _ready():
 	self.visible = true
 
-	Maps.load("res://maps/road.tscn")
 	Maps.load("res://models/car.tscn")
 	
 	get_viewport().connect("size_changed", Callable(self, "on_window_resize"))

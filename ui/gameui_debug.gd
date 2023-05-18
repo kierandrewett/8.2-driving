@@ -16,5 +16,12 @@ func _process(delta):
 	lines.append("pos: %s" % ["%s %s %s" % ["%.2f" % car.global_position.x, "%.2f" % car.global_position.y, "%.2f" % car.global_position.z] if car else ""])
 	lines.append("ang: %s" % ["%s %s %s %s" % ["%.2f" % car.camera.rotation.x, "%.2f" % car.camera.rotation.y, "%.2f" % car.camera.rotation.z, "%.2f" % car.get_floor_angle()] if car else ""])
 	lines.append("vel: %s" % ["%.2f" % (car.velocity.length() * 43.333 if car and car.velocity else 0.0)])
+	lines.append("fov: %s" % ["%.2f" % car.camera.fov])
+	lines.append("")
+	
+	var filtered_roads = car.road_pieces.filter(func(piece): return piece != null)
+	
+	lines.append("roads: %s" % [len(filtered_roads)])
+	lines.append("curr_road: %s" % ["0"])
 	
 	debug_info.text = "\n".join(lines)
