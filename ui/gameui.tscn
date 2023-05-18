@@ -27,6 +27,7 @@ gradient = SubResource("Gradient_m6yfn")
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0r4lc"]
 
 [node name="GameUI" type="Control" groups=["window_xy"]]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -76,7 +77,7 @@ size_flags_horizontal = 0
 theme_override_constants/separation = 16
 vertical = true
 
-[node name="Button" type="Button" parent="MarginContainer/BoxContainer/BoxContainer"]
+[node name="StartButton" type="Button" parent="MarginContainer/BoxContainer/BoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 0.666667)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -88,7 +89,7 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_v6t0d")
 text = "Start Game"
 alignment = 0
 
-[node name="Button2" type="Button" parent="MarginContainer/BoxContainer/BoxContainer"]
+[node name="OptionsButton" type="Button" parent="MarginContainer/BoxContainer/BoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 0.666667)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -100,7 +101,7 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_v6t0d")
 text = "Options"
 alignment = 0
 
-[node name="Button3" type="Button" parent="MarginContainer/BoxContainer/BoxContainer"]
+[node name="QuitButton" type="Button" parent="MarginContainer/BoxContainer/BoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 0.666667)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -173,6 +174,12 @@ layout_mode = 2
 clear_button_enabled = true
 select_all_on_focus = true
 
-[connection signal="pressed" from="MarginContainer/BoxContainer/BoxContainer/Button" to="." method="on_start_game_pressed"]
+[connection signal="button_up" from="MarginContainer/BoxContainer/BoxContainer/StartButton" to="." method="on_button_mouse_clicked"]
+[connection signal="mouse_entered" from="MarginContainer/BoxContainer/BoxContainer/StartButton" to="." method="on_button_mouse_entered"]
+[connection signal="pressed" from="MarginContainer/BoxContainer/BoxContainer/StartButton" to="." method="on_start_game_pressed"]
+[connection signal="button_up" from="MarginContainer/BoxContainer/BoxContainer/OptionsButton" to="." method="on_button_mouse_clicked"]
+[connection signal="mouse_entered" from="MarginContainer/BoxContainer/BoxContainer/OptionsButton" to="." method="on_button_mouse_entered"]
+[connection signal="button_up" from="MarginContainer/BoxContainer/BoxContainer/QuitButton" to="." method="on_button_mouse_clicked"]
+[connection signal="mouse_entered" from="MarginContainer/BoxContainer/BoxContainer/QuitButton" to="." method="on_button_mouse_entered"]
 [connection signal="gui_input" from="Console/ConsoleContainer/ConsoleInput" to="Console" method="on_input"]
 [connection signal="text_submitted" from="Console/ConsoleContainer/ConsoleInput" to="Console" method="on_text_submitted"]

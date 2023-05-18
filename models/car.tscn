@@ -312,26 +312,29 @@ transform = Transform3D(1, 0, 0, 0, 0.936697, 0.350142, 0, -0.350142, 0.936697, 
 transform = Transform3D(9.41749e-07, 3, 0, -3, 9.41749e-07, 0, 0, 0, 3, -0.0348741, -0.297201, -0.503427)
 shape = SubResource("BoxShape3D_ka3xn")
 
-[node name="Wheel" type="MeshInstance3D" parent="."]
+[node name="Wheels" type="Node3D" parent="."]
 transform = Transform3D(1.25576e-07, 0.351136, 0, -0.351136, 1.25576e-07, 0, 0, 0, 0.351136, 0.884954, -1.0276, -1.5498)
+
+[node name="Wheel1" type="MeshInstance3D" parent="Wheels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_ou2h0")
 mesh = SubResource("ArrayMesh_nhor8")
 skeleton = NodePath("")
 
-[node name="Wheel001" type="MeshInstance3D" parent="."]
-transform = Transform3D(1.25576e-07, 0.351136, 0, -0.351136, 1.25576e-07, 0, 0, 0, 0.351136, 0.884954, -1.0276, 0.407213)
+[node name="Wheel2" type="MeshInstance3D" parent="Wheels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.57338)
 material_override = SubResource("StandardMaterial3D_yib4c")
 mesh = SubResource("ArrayMesh_xrviv")
 skeleton = NodePath("")
 
-[node name="Wheel002" type="MeshInstance3D" parent="."]
-transform = Transform3D(0, -0.351136, 0, 0.351136, 0, 0, 0, 0, 0.351136, -0.934599, -1.0276, -1.5498)
+[node name="Wheel3" type="MeshInstance3D" parent="Wheels"]
+transform = Transform3D(-1, -3.57628e-07, 0, 3.57628e-07, -1, 0, 0, 0, 1, -1.90735e-06, -5.1819, 0)
 material_override = SubResource("StandardMaterial3D_njjo6")
 mesh = SubResource("ArrayMesh_sgysu")
 skeleton = NodePath("")
 
-[node name="Wheel003" type="MeshInstance3D" parent="."]
-transform = Transform3D(0, -0.351136, 0, 0.351136, 0, 0, 0, 0, 0.351136, -0.934599, -1.0276, 0.407213)
+[node name="Wheel4" type="MeshInstance3D" parent="Wheels"]
+transform = Transform3D(-1, -3.57628e-07, 0, 3.57628e-07, -1, 0, 0, 0, 1, -1.90735e-06, -5.1819, 5.57338)
 material_override = SubResource("StandardMaterial3D_7u8kc")
 mesh = SubResource("ArrayMesh_borvu")
 skeleton = NodePath("")

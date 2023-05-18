@@ -111,8 +111,6 @@ func execute_command(cmd):
 			self.log(targeted_node)
 			return 0
 		
-	print(command)
-		
 	if command in Globals and Globals[command] != null:
 		if args.size() == 0:
 			self.log("\"%s\" = \"%s\"" % [command, Globals[command]])

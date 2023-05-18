@@ -19,6 +19,11 @@ func _process(delta):
 	lines.append("fov: %s" % ["%.2f" % car.camera.fov])
 	lines.append("")
 	
+	lines.append("curr_lane: %s" % [car.current_lane + 1])
+	lines.append("lanes: %s" % [get_node("/root/Level").lanes])
+	
+	lines.append("")
+	
 	var filtered_roads = car.road_pieces.filter(func(piece): return piece != null)
 	
 	lines.append("roads: %s" % [len(filtered_roads)])

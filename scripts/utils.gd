@@ -19,7 +19,6 @@ func get_all_nodes_of_type(node = get_tree().root, type = "", list = []):
 	
 func get_all_nodes_by_name(node = get_tree().root, name = "", list = []):
 	if node != null:
-		print(node.name)
 		if "name" in node and node.name == name:
 			list.append(node)
 		
