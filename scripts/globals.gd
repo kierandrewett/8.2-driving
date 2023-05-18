@@ -1,7 +1,7 @@
 extends Node
 
 @export var sv_acceleration = 10
-@export var sv_deceleration = 2000
+@export var sv_deceleration = 5
 @export var sv_gravity = 0
 @export var sv_lane_change_x = 5
 @export var sv_terminal_velocity_idle = 10

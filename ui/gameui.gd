@@ -22,7 +22,12 @@ func on_window_resize():
 		node.set_size(Vector2(node.get_size().x, y))
 
 func _process(delta):
+	if Input.is_action_just_pressed("open_gameui"):
+		if !get_node("/root/Car").autopilot:
+			self.visible = !self.visible
+	
 	pass
 	
 func on_start_game_pressed():
 	self.visible = false
+	get_node("/root/Car").autopilot = false

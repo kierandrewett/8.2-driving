@@ -33,6 +33,8 @@ var road_pieces = []
 
 var all_road_nodes = []
 
+var autopilot = false
+
 func _ready():
 	# Prerender 4 roads for us
 	for i in range(0, 4):
@@ -40,6 +42,7 @@ func _ready():
 	
 	if GameUI.visible:
 		camera.position.x -= 1
+		autopilot = true
 
 	Utils.get_all_nodes_by_name(get_tree().root, "RoadContainer", all_road_nodes)
 	Utils.get_all_nodes_by_name(get_tree().root, "RoadLevel", all_road_nodes)
@@ -112,6 +115,9 @@ func _process(delta):
 	
 	# end reset vars
 	
+	if GameUI.visible and !autopilot:
+		return
+	
 	if len(road_pieces) < 1:
 		return
 		
@@ -121,7 +127,10 @@ func _process(delta):
 		has_render_roads_called_frame = true
 		render_new_road()
 
-func _physics_process(delta):	
+func _physics_process(delta):
+	if GameUI.visible and !autopilot:
+		return
+	
 	var collider = get_last_slide_collision()
 	
 	if collider:
@@ -131,7 +140,7 @@ func _physics_process(delta):
 			get_tree().quit()
 		)
 	else:
-		if Input.is_action_just_released("car_reset") and !GameUI.visible:
+		if OS.is_debug_build() and Input.is_action_just_released("car_reset") and !GameUI.visible:
 			position.z = 10
 		
 		if !GameUI.visible and !done_cam_x_reset:
@@ -139,6 +148,8 @@ func _physics_process(delta):
 			move_to_lane(0)
 		
 		var accel = 0 if GameUI.visible else (ACCELERATION / (global_position.z / -1) / 50.0)
+		var movement_amount = accel
+		var deceleration_amount = 0
 		
 		if !GameUI.visible:
 			var input_dir = Input.get_vector("moveleft", "moveright", "none", "none")
@@ -147,15 +158,24 @@ func _physics_process(delta):
 				move_to_lane(0)
 			elif Input.is_action_just_pressed("moveright"):
 				move_to_lane(1)
+			elif Input.is_action_pressed("brake"):
+				print("brake !")
+				deceleration_amount = DECELERATION / (velocity.length())
+				movement_amount = -deceleration_amount
 		
-		velocity.z = move_toward(min(velocity.z - accel, -MIN_DRIVING_VELOCITY), 0, DRIVING_VELOCITY)
+			if OS.is_debug_build() and Input.is_action_just_pressed("dev_boost"):
+				movement_amount = ACCELERATION
+		
+		var movement = min(velocity.z - movement_amount, -MIN_DRIVING_VELOCITY)
+		velocity.z = move_toward(movement, 0, DRIVING_VELOCITY)
 
 		move_and_slide()
 		
-		if GameUI.visible:
+		if GameUI.visible and autopilot:
 			create_tween().tween_property(camera, "fov", 45, 0.01)
 		else:
-			create_tween().tween_property(camera, "fov", clamp(velocity.length() * 6, 50, 120), 1)
+			create_tween().tween_property(camera, "fov", clamp(velocity.length() * 7 - ((1 - deceleration_amount) * 10), 40, 150), 1)
+			create_tween().tween_property(camera, "position:y", clamp(velocity.length() / 20, 3, 20), 1)
 
 func setpos(x, y, z):
 	position = Vector3(x, y, z)
