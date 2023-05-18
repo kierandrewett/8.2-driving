@@ -275,7 +275,6 @@ func _physics_process(delta):
 				if velocity.length() <= MIN_DRIVING_VELOCITY + 10:
 					for sound in Sounds.get_all_sounds_in_sink("engine_accel").values():
 						var vol = max(80 - velocity.length() / 0.2, 0)
-						print(vol)
 						create_tween().tween_property(sound, "volume_db", -vol, 1)
 						sound_accelerate_playing = false
 				
