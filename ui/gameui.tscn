@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://bouxkwjcpvs4a"]
+[gd_scene load_steps=14 format=3 uid="uid://bouxkwjcpvs4a"]
 
 [ext_resource type="Script" path="res://ui/gameui.gd" id="1_5brjb"]
 [ext_resource type="Script" path="res://ui/gameui_console.gd" id="2_yb7b5"]
+[ext_resource type="Script" path="res://ui/gameui_options.gd" id="3_yj7i2"]
 
 [sub_resource type="Gradient" id="Gradient_m6yfn"]
 interpolation_mode = 2
@@ -45,7 +46,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_gftoo")
 
-[node name="MarginContainer" type="MarginContainer" parent="." groups=["window_xy"]]
+[node name="MainMenu" type="MarginContainer" parent="." groups=["window_xy"]]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -57,7 +58,7 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="BoxContainer" type="BoxContainer" parent="MarginContainer"]
+[node name="BoxContainer" type="BoxContainer" parent="MainMenu"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
@@ -65,19 +66,19 @@ theme_override_constants/separation = 24
 alignment = 1
 vertical = true
 
-[node name="Label" type="Label" parent="MarginContainer/BoxContainer"]
+[node name="Label" type="Label" parent="MainMenu/BoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_font_sizes/font_size = 64
 text = "Crashy Roads"
 
-[node name="BoxContainer" type="BoxContainer" parent="MarginContainer/BoxContainer"]
+[node name="BoxContainer" type="BoxContainer" parent="MainMenu/BoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_constants/separation = 16
 vertical = true
 
-[node name="StartButton" type="Button" parent="MarginContainer/BoxContainer/BoxContainer"]
+[node name="StartButton" type="Button" parent="MainMenu/BoxContainer/BoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 0.666667)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -89,7 +90,7 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_v6t0d")
 text = "Start Game"
 alignment = 0
 
-[node name="OptionsButton" type="Button" parent="MarginContainer/BoxContainer/BoxContainer"]
+[node name="OptionsButton" type="Button" parent="MainMenu/BoxContainer/BoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 0.666667)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -101,7 +102,7 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_v6t0d")
 text = "Options"
 alignment = 0
 
-[node name="QuitButton" type="Button" parent="MarginContainer/BoxContainer/BoxContainer"]
+[node name="QuitButton" type="Button" parent="MainMenu/BoxContainer/BoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 0.666667)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -174,12 +175,21 @@ layout_mode = 2
 clear_button_enabled = true
 select_all_on_focus = true
 
-[connection signal="button_up" from="MarginContainer/BoxContainer/BoxContainer/StartButton" to="." method="on_button_mouse_clicked"]
-[connection signal="mouse_entered" from="MarginContainer/BoxContainer/BoxContainer/StartButton" to="." method="on_button_mouse_entered"]
-[connection signal="pressed" from="MarginContainer/BoxContainer/BoxContainer/StartButton" to="." method="on_start_game_pressed"]
-[connection signal="button_up" from="MarginContainer/BoxContainer/BoxContainer/OptionsButton" to="." method="on_button_mouse_clicked"]
-[connection signal="mouse_entered" from="MarginContainer/BoxContainer/BoxContainer/OptionsButton" to="." method="on_button_mouse_entered"]
-[connection signal="button_up" from="MarginContainer/BoxContainer/BoxContainer/QuitButton" to="." method="on_button_mouse_clicked"]
-[connection signal="mouse_entered" from="MarginContainer/BoxContainer/BoxContainer/QuitButton" to="." method="on_button_mouse_entered"]
+[node name="Options" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+script = ExtResource("3_yj7i2")
+
+[connection signal="button_up" from="MainMenu/BoxContainer/BoxContainer/StartButton" to="." method="on_button_mouse_clicked"]
+[connection signal="mouse_entered" from="MainMenu/BoxContainer/BoxContainer/StartButton" to="." method="on_button_mouse_entered"]
+[connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/StartButton" to="." method="on_start_game_pressed"]
+[connection signal="button_up" from="MainMenu/BoxContainer/BoxContainer/OptionsButton" to="." method="on_button_mouse_clicked"]
+[connection signal="mouse_entered" from="MainMenu/BoxContainer/BoxContainer/OptionsButton" to="." method="on_button_mouse_entered"]
+[connection signal="button_up" from="MainMenu/BoxContainer/BoxContainer/QuitButton" to="." method="on_button_mouse_clicked"]
+[connection signal="mouse_entered" from="MainMenu/BoxContainer/BoxContainer/QuitButton" to="." method="on_button_mouse_entered"]
 [connection signal="gui_input" from="Console/ConsoleContainer/ConsoleInput" to="Console" method="on_input"]
 [connection signal="text_submitted" from="Console/ConsoleContainer/ConsoleInput" to="Console" method="on_text_submitted"]

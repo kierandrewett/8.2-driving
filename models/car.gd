@@ -121,6 +121,8 @@ func move_to_lane(id):
 	var level = get_node("/root/Level")
 	
 	if id >= level.lanes or id < 0:
+		
+		
 		return
 		
 	indicator = true
@@ -243,7 +245,7 @@ func _physics_process(delta):
 			elif Input.is_action_just_pressed("moveright"):
 				move_to_lane(current_lane + 1)
 			
-			if Input.is_action_just_pressed("brake"):
+			if Input.is_action_just_pressed("brake") and !Input.is_action_pressed("accelerate"):
 				play_engine_braking("short" if velocity.length() < 20 else "long")
 			
 			if Input.is_action_pressed("brake"):
@@ -285,10 +287,6 @@ func _physics_process(delta):
 		velocity.z = move_toward(movement, 0, DRIVING_VELOCITY)
 
 		move_and_slide()
-		
-		if !is_moving_lanes:
-			swerving_x += 1
-			swerving_amt = sin(swerving_x * 4) * 0.08
 		
 		if GameUI.visible and autopilot:
 			create_tween().tween_property(camera, "fov", 45, 0.01)

@@ -1,6 +1,6 @@
 extends Node
 
-@export var sv_acceleration = 5
+@export var sv_acceleration = 2
 @export var sv_deceleration = 10
 @export var sv_gravity = 0
 @export var sv_lane_change_x = 5

@@ -1,7 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://dc7337iwj7fcs"]
+[gd_scene load_steps=6 format=3 uid="uid://bkwgnut0jj87f"]
 
 [ext_resource type="Script" path="res://maps/dg_01.gd" id="1_lc13s"]
-[ext_resource type="PackedScene" uid="uid://bqu3t3qvbbm3n" path="res://models/road.tscn" id="3_26fgq"]
+[ext_resource type="PackedScene" path="res://models/road.tscn" id="3_26fgq"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7dmvi"]
 sky_top_color = Color(0.309804, 0.443137, 0.705882, 1)

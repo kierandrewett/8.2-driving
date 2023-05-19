@@ -38,7 +38,10 @@ func _process(delta):
 func on_start_game_pressed():
 	self.visible = false
 	get_node("/root/Car").autopilot = false
-	get_node("MarginContainer/BoxContainer/BoxContainer/StartButton").text = "Resume Game"
+	get_node("MainMenu/BoxContainer/BoxContainer/StartButton").text = "Resume Game"
+
+func on_options_pressed():
+	
 
 func on_button_mouse_entered():
 	Sounds.play_sound("res://sounds/ui/hover.wav")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://bshxyxetsko0s"]
+[gd_scene load_steps=26 format=3 uid="uid://h55mtu5guevv"]
 
 [ext_resource type="Texture2D" uid="uid://cj0a8c4jhpd80" path="res://textures/car.png" id="1_ihkxv"]
 [ext_resource type="Script" path="res://models/car.gd" id="2_f1o5c"]
@@ -316,7 +316,6 @@ shape = SubResource("BoxShape3D_ka3xn")
 transform = Transform3D(1.25576e-07, 0.351136, 0, -0.351136, 1.25576e-07, 0, 0, 0, 0.351136, 0.884954, -1.0276, -1.5498)
 
 [node name="Wheel1" type="MeshInstance3D" parent="Wheels"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_ou2h0")
 mesh = SubResource("ArrayMesh_nhor8")
 skeleton = NodePath("")
