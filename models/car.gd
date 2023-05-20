@@ -77,8 +77,6 @@ func _ready():
 	var car_shape = get_node("/root/Car/Collision").shape.size
 
 	for road in all_road_nodes:
-		print(road)
-		
 		if "position" in road and road.name == "RoadLevel":
 			road.position.y -= car_shape.x * 2
 			road.position.x += car_shape.z * 2
@@ -196,7 +194,6 @@ func move_to_lane(id):
 	)
 	
 func play_engine_braking(type = "short"):
-	print("sound_braking_playing ", sound_braking_playing)
 	if sound_braking_playing == false:
 		sound_braking_playing = true
 	
@@ -248,7 +245,6 @@ func _process(delta):
 		play_indicator_tick()
 
 func _physics_process(delta):
-	print(camera.position)
 	var collider = get_last_slide_collision()
 	
 	if collider and get_node("/root/Level/RoadLevel") and Utils.is_recursive_ancestor_of(collider.get_collider(), get_node("/root/Level/RoadLevel")):
@@ -304,7 +300,7 @@ func _physics_process(delta):
 			elif Input.is_action_just_pressed("moveright"):
 				move_to_lane(current_lane + 1)
 			
-			if Input.is_action_just_pressed("brake") and !Input.is_action_pressed("accelerate"):
+			if Input.is_action_just_pressed("brake"):
 				play_engine_braking("short" if velocity.length() < 20 else "long")
 			
 			if Input.is_action_pressed("brake"):
@@ -316,12 +312,11 @@ func _physics_process(delta):
 					sound_accelerate_playing = false
 				
 			if Input.is_action_just_pressed("accelerate"):
-				print("just pressed")
 				for sound in Sounds.get_all_sounds_in_sink("engine_accel").values():
 					sound.seek(randf_range(1, 1.5) if sound_accelerate_playing else 0)
 					sound.pitch_scale = 1
 				
-			if Input.is_action_pressed("accelerate"):
+			if Input.is_action_pressed("accelerate") and !Input.is_action_pressed("brake"):
 				movement_amount = ACCELERATION * (velocity.length() / 400.0)
 				if !Input.is_action_pressed("brake"):
 					for sound in Sounds.get_all_sounds_in_sink("engine_accel").values():
@@ -360,7 +355,6 @@ func _physics_process(delta):
 			
 			fov_tween.tween_property(camera, "fov", clamp(velocity.length() * 7 - ((1 - deceleration_amount) * 10), 40, 120), 1)
 			create_tween().tween_property(camera, "position:y", clamp(velocity.length() / 20, 3, 20), 1)
-			print("dd", clamp(velocity.length() / 20, 3, 5))
 			create_tween().tween_property(camera, "position:z", clamp(velocity.length() / 20, 3, 5), 0.25).set_trans(Tween.TRANS_SINE)
 			
 func get_speed_mph():

@@ -44,7 +44,6 @@ func clock_tick():
 	)
 
 func act(tick):
-	print(len(mesh.get("points")), tick)
 	if len(mesh.get("points")) <= tick:
 		print("Out of frames to play, stopping nav mesh...")
 		stop()

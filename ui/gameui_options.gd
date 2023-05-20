@@ -36,7 +36,6 @@ func on_back_button_mouse_up():
 		var parent_name_split = Array(current_menu_name.split("__"))
 		parent_name_split.pop_back()
 		var parent_name = "__".join(parent_name_split)
-		print(current_menu_name, parent_name)
 		on_button_pressed(parent_name)
 
 func on_button_pressed(menu):

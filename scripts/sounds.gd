@@ -60,7 +60,6 @@ func set_sink_volume(name, volume):
 		return
 	
 	for key in sounds_playing[name].keys():
-		print(volume)
 		sounds_playing[name][key].volume_db = volume
 			
 func get_all_sounds_in_sink(name):

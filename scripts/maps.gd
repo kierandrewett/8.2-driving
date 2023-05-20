@@ -38,7 +38,6 @@ func fixup_map(node = null):
 				parent.queue_free()
 
 			if "position" in road:
-				print(road)
 				road.position.y -= car_shape.x * 2
 				road.position.x += car_shape.z * 2
 	
