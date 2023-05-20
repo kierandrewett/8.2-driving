@@ -50,8 +50,15 @@ var indicator_timer: SceneTreeTimer = null
 
 var crashed = false
 var crashed_z = 0
+var crashed_x = 0
 
 var accelerator_tween: Tween = null
+var fov_tween: Tween = null
+var cam_pos_tween: Tween = null
+var slomo_tween: Tween = null
+
+func reset_camera_init():
+	camera.position.x -= 1
 
 func _ready():
 	# Prerender 5 roads for us
@@ -59,33 +66,57 @@ func _ready():
 		render_new_road()
 	
 	if GameUI.visible:
-		camera.position.x -= 1
+		reset_camera_init()
 		autopilot = true
+		NavMeshes.play("dg_01") # todo: change map name
 
-	Utils.get_all_nodes_by_name(get_tree().root, "RoadContainer", all_road_nodes)
+	var all_road_nodes = []
+	
 	Utils.get_all_nodes_by_name(get_tree().root, "RoadLevel", all_road_nodes)
 
-	var car_shape = get_node("Collision").shape.size
+	var car_shape = get_node("/root/Car/Collision").shape.size
 
 	for road in all_road_nodes:
-		# In our map, we add the road in so we know where to put the obstacles
-		# Since the obstacles are a child of the Road scene, we need to move 
-		# the obstacles outside and then remove the road itself.
-		# Removing the road is fine, because we just add it back in the actual game
-		if road.get_parent().name == "Road" and road.name == "RoadLevel":
-			var parent = road.get_parent()
-			var node_to_move = road
-			parent.remove_child(node_to_move)
-			parent.get_parent().add_child(node_to_move)
-			parent.queue_free()
+		print(road)
 		
-		if "position" in road:
+		if "position" in road and road.name == "RoadLevel":
 			road.position.y -= car_shape.x * 2
 			road.position.x += car_shape.z * 2
-			
+	
+	init_sounds()
+	
+	accelerator_tween = get_tree().create_tween()
+	fov_tween = get_tree().create_tween()
+	cam_pos_tween = get_tree().create_tween()
+	slomo_tween = get_tree().create_tween()
+
+func init_sounds():
 	Sounds.play_sound("res://sounds/engine_idle.wav", get_tree().root, Globals.volume, 1, "engine")
 	Sounds.play_sound("res://sounds/engine_acceleration.wav", get_tree().root, -80, 1, "engine_accel")
-	accelerator_tween = get_tree().create_tween().set_process_mode(Tween.TWEEN_PROCESS_IDLE)
+
+func reset():
+	crashed_z = 0
+	crashed_x = 0
+	
+	accelerator_tween.kill()
+	fov_tween.kill()
+	cam_pos_tween.kill()
+	slomo_tween.kill()
+	
+	Engine.time_scale = 1.0
+	
+	crashed = false
+	
+	sound_braking_playing = false
+	sound_accelerate_playing = false
+	sound_collision_playing = false
+	sound_indicator_playing = false
+	
+	reset_camera()
+	
+	position.x = 0
+	
+	init_sounds()
 
 func run_idle_movement():
 	move_to_lane(randi() % 2)
@@ -112,17 +143,24 @@ func render_new_road():
 	
 func reset_camera():
 	done_cam_x_reset = true
-	create_tween().tween_property(camera, "position:x", 0, 0.25).set_trans(Tween.TRANS_SINE)
+	
+	if cam_pos_tween:
+		cam_pos_tween.kill()
+		cam_pos_tween = get_tree().create_tween()
+	
+	cam_pos_tween.tween_property(camera, "position:x", 0, 0.25).set_trans(Tween.TRANS_SINE)
+	cam_pos_tween.tween_property(camera, "position:z", 3, 1).set_trans(Tween.TRANS_SINE)
 
 func move_to_lane(id):
 	if indicator_timer != null:
 		indicator_timer = null
 	
-	var level = get_node("/root/Level")
+	var level = get_node_or_null("/root/Level")
+	
+	if !level:
+		return
 	
 	if id >= level.lanes or id < 0:
-		
-		
 		return
 		
 	indicator = true
@@ -180,8 +218,12 @@ func play_indicator_tick():
 		)
 
 func on_crash():
-	print("crash")
+	print("Crashed")
+	Engine.time_scale = 1.0
 	crashed_z = camera.position.x + 10
+	GameUI.visible = true
+	GameUI.set_button_text("Restart Game")
+	GameUI.get_node("Gradient").modulate.a = 0.75
 
 func _process(delta):
 	# start reset vars
@@ -206,21 +248,38 @@ func _process(delta):
 		play_indicator_tick()
 
 func _physics_process(delta):
-	if GameUI.visible and !autopilot:
-		return
-	
+	print(camera.position)
 	var collider = get_last_slide_collision()
 	
-	if collider:
-		velocity.z = 0
-		play_car_collision()
-		Sounds.stop_some_sounds(["engine"])
-		create_tween().tween_property(camera, "fov", 45, 0.1)
+	if collider and get_node("/root/Level/RoadLevel") and Utils.is_recursive_ancestor_of(collider.get_collider(), get_node("/root/Level/RoadLevel")):
 		if !crashed:
 			crashed = true
 			on_crash()
-		create_tween().tween_property(camera, "position:z", crashed_z, 4)
+			create_tween().tween_property(self, "position:z", collider.get_position().z, 0.1)
+
+		velocity = Vector3.ZERO
+		
+		play_car_collision()
+		Sounds.stop_some_sounds(["engine", "engine_accel"])
+		
+		if fov_tween:
+			fov_tween.kill()
+			fov_tween = create_tween()
+		
+		fov_tween.tween_property(camera, "fov", 45, 0.1)
+		
+		if cam_pos_tween:
+			cam_pos_tween.kill()
+			cam_pos_tween = get_tree().create_tween()
+	
+		cam_pos_tween.tween_property(camera, "position:z", crashed_z, 3).set_ease(Tween.EASE_OUT)
 	else:
+		slomo_tween = create_tween()
+		slomo_tween.tween_property(Engine, "time_scale", 0.01 if GameUI.visible and !autopilot else 1.0, 0.1 if GameUI.visible and !autopilot else 0.1)
+		
+		if GameUI.visible and !autopilot:
+			return
+		
 		if OS.is_debug_build() and Input.is_action_just_released("car_reset") and !GameUI.visible:
 			position.z = 10
 		
@@ -289,10 +348,26 @@ func _physics_process(delta):
 		move_and_slide()
 		
 		if GameUI.visible and autopilot:
-			create_tween().tween_property(camera, "fov", 45, 0.01)
+			if fov_tween:
+				fov_tween.kill()
+				fov_tween = create_tween()
+		
+			fov_tween.tween_property(camera, "fov", 45, 0.01)
 		else:
-			create_tween().tween_property(camera, "fov", clamp(velocity.length() * 7 - ((1 - deceleration_amount) * 10), 40, 150), 1)
+			if fov_tween:
+				fov_tween.kill()
+				fov_tween = create_tween()
+			
+			fov_tween.tween_property(camera, "fov", clamp(velocity.length() * 7 - ((1 - deceleration_amount) * 10), 40, 120), 1)
 			create_tween().tween_property(camera, "position:y", clamp(velocity.length() / 20, 3, 20), 1)
+			print("dd", clamp(velocity.length() / 20, 3, 5))
+			create_tween().tween_property(camera, "position:z", clamp(velocity.length() / 20, 3, 5), 0.25).set_trans(Tween.TRANS_SINE)
+			
+func get_speed_mph():
+	return velocity.length() * 1.5
+			
+func get_speed_kmh():
+	return get_speed_mph() * 1.609344
 			
 func setpos(x, y, z):
 	position = Vector3(x, y, z)

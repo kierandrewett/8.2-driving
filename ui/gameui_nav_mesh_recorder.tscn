@@ -1,0 +1,53 @@
+[gd_scene load_steps=2 format=3 uid="uid://dyd3wm556vgph"]
+
+[ext_resource type="Script" path="res://ui/gameui_nav_mesh_recorder.gd" id="1_s7d77"]
+
+[node name="GameUINavMeshRecorder" type="Window"]
+title = "Nav Mesh Recorder"
+position = Vector2i(10, 10)
+size = Vector2i(500, 140)
+min_size = Vector2i(500, 140)
+script = ExtResource("1_s7d77")
+
+[node name="Data" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Container" type="BoxContainer" parent="Data"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 4
+vertical = true
+
+[node name="State" type="Label" parent="Data/Container"]
+layout_mode = 2
+
+[node name="Duration" type="Label" parent="Data/Container"]
+layout_mode = 2
+
+[node name="Stats" type="Label" parent="Data/Container"]
+layout_mode = 2
+
+[node name="Buttons" type="BoxContainer" parent="Data/Container"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="RecordButton" type="Button" parent="Data/Container/Buttons"]
+layout_mode = 2
+text = "Record"
+
+[node name="StopButton" type="Button" parent="Data/Container/Buttons"]
+layout_mode = 2
+text = "Stop"
+
+[connection signal="pressed" from="Data/Container/Buttons/RecordButton" to="." method="on_record_button_pressed"]
+[connection signal="pressed" from="Data/Container/Buttons/StopButton" to="." method="on_stop_button_pressed"]

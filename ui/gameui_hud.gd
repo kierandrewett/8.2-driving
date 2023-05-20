@@ -8,13 +8,16 @@ func _ready():
 
 func _process(delta):
 	if !car:
-		car = get_node("/root/Car")
+		car = get_node_or_null("/root/Car")
+	
+	if !car:
+		return
 	
 	self.visible = !GameUI.visible
 	
 	if GameUI.visible:
 		return
 	
-	speedometer.text = "%d mph" % [car.velocity.length() * 1.5]
+	speedometer.text = "%d mph" % [car.get_speed_mph()]
 	
 	pass

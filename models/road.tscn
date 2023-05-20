@@ -1,6 +1,7 @@
-[gd_scene load_steps=14 format=3 uid="uid://bqu3t3qvbbm3n"]
+[gd_scene load_steps=15 format=3 uid="uid://bqu3t3qvbbm3n"]
 
 [ext_resource type="Texture2D" uid="uid://tfockiebrqlm" path="res://textures/road_marking.png" id="1_7il0w"]
+[ext_resource type="Script" path="res://models/road.gd" id="1_gvxq5"]
 [ext_resource type="Texture2D" uid="uid://culk3omrqr6ow" path="res://textures/asphalt.png" id="2_isq5e"]
 [ext_resource type="Material" uid="uid://b16ueay5pqsll" path="res://materials/pavement.tres" id="3_olrfc"]
 [ext_resource type="Texture2D" uid="uid://chl6dctidprwf" path="res://textures/pavement-curb.png" id="4_7hxxe"]
@@ -63,6 +64,7 @@ albedo_texture = ExtResource("2_isq5e")
 uv1_triplanar = true
 
 [node name="Road" type="Node"]
+script = ExtResource("1_gvxq5")
 
 [node name="RoadContainer" type="Node3D" parent="."]
 

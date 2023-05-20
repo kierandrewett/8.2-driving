@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://h55mtu5guevv"]
+[gd_scene load_steps=26 format=3 uid="uid://bshxyxetsko0s"]
 
 [ext_resource type="Texture2D" uid="uid://cj0a8c4jhpd80" path="res://textures/car.png" id="1_ihkxv"]
 [ext_resource type="Script" path="res://models/car.gd" id="2_f1o5c"]
@@ -307,6 +307,7 @@ script = ExtResource("2_f1o5c")
 
 [node name="Camera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.936697, 0.350142, 0, -0.350142, 0.936697, -0.136533, 1.83459, 1.51334)
+current = true
 
 [node name="Collision" type="CollisionShape3D" parent="."]
 transform = Transform3D(9.41749e-07, 3, 0, -3, 9.41749e-07, 0, 0, 0, 3, -0.0348741, -0.297201, -0.503427)

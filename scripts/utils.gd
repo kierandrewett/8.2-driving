@@ -35,3 +35,8 @@ func get_node_by_name(node = get_tree().root, name = ""):
 	
 	while list.size() == 1:
 		return list[0]
+		
+func is_recursive_ancestor_of(child: Node, parent: Node):
+	var all_nodes = []
+	get_all_nodes(parent, all_nodes)
+	return all_nodes.has(child)

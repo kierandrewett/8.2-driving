@@ -46,7 +46,7 @@ func stop_some_sounds(sinks = []):
 			sounds_playing[key][sound_key].queue_free()
 			sounds_playing[key].erase(sound_key)
 			
-func set_paused_sounds(paused = false, ignore_sinks = []):
+func set_paused_sounds(paused = false, ignore_sinks = ["master"]):
 	for key in sounds_playing.keys():
 		if ignore_sinks.has(key):
 			continue

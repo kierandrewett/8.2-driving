@@ -1,0 +1,555 @@
+{
+    "created_at": 1684534538.28118,
+    "map": "",
+    "points": [
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -1.66666650772095
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -2.66666674613953
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -3.83333396911621
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -4.83333301544189
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -5.83333206176758
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -6.83333110809326
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -7.99999666213989
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -8.99999809265137
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -10
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -11.0000019073486
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -12.1666707992554
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -13.166672706604
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -14.1666746139526
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -15.1666765213013
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -16.3333435058594
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -17.3333396911621
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -18.3333358764648
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -19.3333320617676
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -20.4999942779541
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -21.4999904632568
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -22.4999866485596
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -23.4999828338623
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -24.6666450500488
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -25.6666412353516
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -26.6666374206543
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -27.666633605957
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -28.8332958221436
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -29.8332920074463
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -30.833288192749
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -31.8332843780518
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -32.9999580383301
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -33.9999656677246
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -34.9999732971191
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -35.9999809265137
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 1,
+            "velocity": "(0, 0, -10)",
+            "x": 0.903750002384186,
+            "y": 0,
+            "z": -37.1666564941406
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 1,
+            "velocity": "(0, 0, -10)",
+            "x": 3.94535398483276,
+            "y": 0,
+            "z": -38.1666641235352
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 1,
+            "velocity": "(0, 0, -10)",
+            "x": 5,
+            "y": 0,
+            "z": -39.1666717529297
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 1,
+            "velocity": "(0, 0, -10)",
+            "x": 5,
+            "y": 0,
+            "z": -40.1666793823242
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 1,
+            "velocity": "(0, 0, -10)",
+            "x": 5,
+            "y": 0,
+            "z": -41.3333549499512
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 1,
+            "velocity": "(0, 0, -10)",
+            "x": 5,
+            "y": 0,
+            "z": -42.3333625793457
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 1,
+            "velocity": "(0, 0, -10)",
+            "x": 5,
+            "y": 0,
+            "z": -43.3333702087402
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 1,
+            "velocity": "(0, 0, -10)",
+            "x": 5,
+            "y": 0,
+            "z": -44.5000457763672
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 1,
+            "velocity": "(0, 0, -10)",
+            "x": 5,
+            "y": 0,
+            "z": -45.5000534057617
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 4.91481447219849,
+            "y": 0,
+            "z": -46.5000610351562
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 2.5,
+            "y": 0,
+            "z": -47.5000686645508
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0.0839042663574219,
+            "y": 0,
+            "z": -48.6667442321777
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -49.6667518615723
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -50.6667594909668
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -51.6667671203613
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -52.8334426879883
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -53.8334503173828
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -54.8334579467773
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -55.8334655761719
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -57.0001411437988
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -58.0001487731934
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -59.0001564025879
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -60.0001640319824
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -61.1668395996094
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -62.1668472290039
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -63.1668548583984
+        },
+        {
+            "accelerating": false,
+            "braking": false,
+            "lane": 0,
+            "velocity": "(0, 0, -10)",
+            "x": 0,
+            "y": 0,
+            "z": -64.1668548583984
+        }
+    ]
+}

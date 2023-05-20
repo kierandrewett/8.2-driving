@@ -110,6 +110,12 @@ func execute_command(cmd):
 		else:
 			self.log(targeted_node)
 			return 0
+	
+	if command == "nmrecorder":
+		if get_node("/root/GameUINavMeshRecorder"):
+			get_node("/root/GameUINavMeshRecorder").visible = true
+		else:
+			Maps.load("res://ui/gameui_nav_mesh_recorder.tscn")
 		
 	if command in Globals and Globals[command] != null:
 		if args.size() == 0:
