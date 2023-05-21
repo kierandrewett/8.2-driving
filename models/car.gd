@@ -20,6 +20,8 @@ var line_rotation = Globals.cl_lane_change_shake_degree
 
 var is_moving_lanes = false
 
+var current_state = ""
+
 @onready var camera: Camera3D = $Camera
 
 var road: Node = null
@@ -30,6 +32,7 @@ var has_render_roads_called_frame = false
 
 var road_index = 0
 var road_pieces = []
+var road_pieces_for_removal = []
 
 var all_road_nodes = []
 
@@ -47,6 +50,7 @@ var sound_indicator_playing = false
 
 var indicator = false
 var indicator_timer: SceneTreeTimer = null
+var indicator_start_time = 0
 
 var crashed = false
 var crashed_z = 0
@@ -56,6 +60,13 @@ var accelerator_tween: Tween = null
 var fov_tween: Tween = null
 var cam_pos_tween: Tween = null
 var slomo_tween: Tween = null
+var pavement_hit_tween: Tween = null
+
+var start_position = Vector3.ZERO
+
+var post_brake_accel_block = false
+
+var collisions = []
 
 func reset_camera_init():
 	camera.position.x -= 1
@@ -68,18 +79,12 @@ func _ready():
 	if GameUI.visible:
 		reset_camera_init()
 		autopilot = true
-		NavMeshes.play("dg_01") # todo: change map name
 
 	var all_road_nodes = []
 	
 	Utils.get_all_nodes_by_name(get_tree().root, "RoadLevel", all_road_nodes)
 
 	var car_shape = get_node("/root/Car/Collision").shape.size
-
-	for road in all_road_nodes:
-		if "position" in road and road.name == "RoadLevel":
-			road.position.y -= car_shape.x * 2
-			road.position.x += car_shape.z * 2
 	
 	init_sounds()
 	
@@ -87,23 +92,34 @@ func _ready():
 	fov_tween = get_tree().create_tween()
 	cam_pos_tween = get_tree().create_tween()
 	slomo_tween = get_tree().create_tween()
+	pavement_hit_tween = get_tree().create_tween()
+	
+	start_position = global_position
 
 func init_sounds():
 	Sounds.play_sound("res://sounds/engine_idle.wav", get_tree().root, Globals.volume, 1, "engine")
 	Sounds.play_sound("res://sounds/engine_acceleration.wav", get_tree().root, -80, 1, "engine_accel")
+	Sounds.play_sound("res://sounds/indicator_tick.wav", get_tree().root, -80, 1, "indicator")
 
 func reset():
 	crashed_z = 0
 	crashed_x = 0
 	
-	accelerator_tween.kill()
-	fov_tween.kill()
-	cam_pos_tween.kill()
-	slomo_tween.kill()
+	if accelerator_tween:
+		accelerator_tween.kill()
+	if fov_tween:
+		fov_tween.kill()
+	if cam_pos_tween:
+		cam_pos_tween.kill()
+	if slomo_tween:
+		slomo_tween.kill()
 	
 	Engine.time_scale = 1.0
 	
 	crashed = false
+	current_state = ""
+	move_and_slide()
+	collisions = []
 	
 	sound_braking_playing = false
 	sound_accelerate_playing = false
@@ -114,7 +130,12 @@ func reset():
 	
 	position.x = 0
 	
+	Sounds.stop_some_sounds(["engine", "engine_accel", "indicator"])
 	init_sounds()
+	
+	start_position = global_position
+
+	MIN_DRIVING_VELOCITY = 10
 
 func run_idle_movement():
 	move_to_lane(randi() % 2)
@@ -131,8 +152,6 @@ func render_new_road():
 	var bounds: Area3D = road_chunk.get_node("RoadContainer/AreaBounds")
 	bounds.body_exited.connect(func (body):
 		if body.name == self.name:
-			var road_to_remove = road_pieces.pop_front()
-			road_to_remove.queue_free()
 			render_new_road()
 	)
 		
@@ -150,20 +169,35 @@ func reset_camera():
 	cam_pos_tween.tween_property(camera, "position:z", 3, 1).set_trans(Tween.TRANS_SINE)
 
 func move_to_lane(id):
-	if indicator_timer != null:
-		indicator_timer = null
-	
-	var level = get_node_or_null("/root/Level")
+	if indicator_timer != null and velocity.length() < 15:
+		return
+		
+	var level = GameUI.map_loaded
 	
 	if !level:
 		return
+		
+	var direction = "right" if id < current_lane else "left"
 	
 	if id >= level.lanes or id < 0:
+		if pavement_hit_tween:
+			pavement_hit_tween.kill()
+			pavement_hit_tween = get_tree().create_tween()
+		
+		pavement_hit_tween.tween_property(camera, "rotation:z", -line_rotation, 0.5 / 4).finished.connect(func ():
+			create_tween().tween_property(camera, "rotation:z", 0, 0.5)
+		)
+		create_tween().tween_property(camera, "rotation:z", 0, 0.5)
+		return
+		
+	if velocity.length() <= 0:
 		return
 		
 	indicator = true
-	
-	var direction = "right" if id < current_lane else "left"
+	indicator_start_time = Time.get_unix_time_from_system()
+	for i in Sounds.get_all_sounds_in_sink("indicator").values():
+		i.seek(0)
+	Sounds.set_sink_volume("indicator", 1.0)
 	
 	current_lane = id
 	is_moving_lanes = true
@@ -171,9 +205,10 @@ func move_to_lane(id):
 	
 	var lane_change_duration = clamp(1 - velocity.length() / 40, 0.1, 0.25)
 
-	create_tween().tween_property(self, "position:x", line_x * id, lane_change_duration).set_trans(Tween.TRANS_SINE)
-	create_tween().tween_property(camera, "rotation:z", -line_rotation, lane_change_duration / 4).finished.connect(func ():
+	create_tween().tween_property(self, "position:x", line_x * id, lane_change_duration).set_trans(Tween.TRANS_SINE).finished.connect(func ():
 		is_moving_lanes = false
+	)
+	create_tween().tween_property(camera, "rotation:z", -line_rotation, lane_change_duration / 4).finished.connect(func ():
 		create_tween().tween_property(camera, "rotation:z", 0, lane_change_duration)
 	)
 	
@@ -186,11 +221,12 @@ func move_to_lane(id):
 			create_tween().tween_property(camera, "rotation:y", 0, lane_change_duration)
 		)
 	
-	indicator_timer = get_tree().create_timer(1)
+	indicator_timer = get_tree().create_timer(lane_change_duration * 1.5)
 	indicator_timer.timeout.connect(func ():
-		indicator = false
-		Sounds.stop_some_sounds(["indicator"])
-		indicator_timer = null
+		if indicator_timer:
+			indicator = false
+			Sounds.set_sink_volume("indicator", -80.0)
+			indicator_timer = null
 	)
 	
 func play_engine_braking(type = "short"):
@@ -206,20 +242,27 @@ func play_car_collision():
 		sound_collision_playing = true
 		Sounds.play_sound("res://sounds/car_collision.wav", get_tree().root, Globals.volume, 1, "crash")
 
-func play_indicator_tick():
-	if !sound_indicator_playing:
-		sound_indicator_playing = true
-		Sounds.play_sound("res://sounds/indicator_tick.wav", get_tree().root, Globals.volume, 1, "indicator").finished.connect(func ():
-			sound_indicator_playing = false
-			play_indicator_tick()	
-		)
+func fade_out_accel(movement_amount):
+	# Fade out accelerator if we become too slow
+	if velocity.length() <= MIN_DRIVING_VELOCITY + 10:
+		for sound in Sounds.get_all_sounds_in_sink("engine_accel").values():
+			var vol = max(80 - velocity.length() / 0.2, 0)
+			create_tween().tween_property(sound, "volume_db", -vol, 1)
+			sound_accelerate_playing = false
 
-func on_crash():
-	print("Crashed")
-	Engine.time_scale = 1.0
+	for sound in Sounds.get_all_sounds_in_sink("engine_accel").values():
+		sound.pitch_scale = clamp(movement_amount / -1 * 10, 0.3, 1)
+
+func on_end_game(ending):
+	if ending == "crash":
+		GameUI.set_button_text("Restart Game")
+		
 	crashed_z = camera.position.x + 10
+	current_state = ending
+		
+	Engine.time_scale = 1.0
+	
 	GameUI.visible = true
-	GameUI.set_button_text("Restart Game")
 	GameUI.get_node("Gradient").modulate.a = 0.75
 
 func _process(delta):
@@ -240,24 +283,21 @@ func _process(delta):
 	
 	if GameUI.visible and !autopilot:
 		return
-		
-	if indicator:
-		play_indicator_tick()
 
 func _physics_process(delta):
-	var collider = get_last_slide_collision()
+	var collision = get_slide_collision(get_slide_collision_count() - 1) if get_slide_collision_count() else null
 	
-	if collider and get_node("/root/Level/RoadLevel") and Utils.is_recursive_ancestor_of(collider.get_collider(), get_node("/root/Level/RoadLevel")):
-		if !crashed:
+	if collision and GameUI.map_loaded.get_node("RoadLevel") and Utils.is_recursive_ancestor_of(collision.get_collider(), GameUI.map_loaded.get_node("RoadLevel")):
+		if !crashed and !collisions.has(collision.get_collider_rid()):
+			collisions.append(collision.get_collider_rid())
+			print("Crashed")
 			crashed = true
-			on_crash()
-			create_tween().tween_property(self, "position:z", collider.get_position().z, 0.1)
-
+			on_end_game("crash")
+			play_car_collision()
+			Sounds.stop_some_sounds(["engine", "engine_accel", "indicator"])
+			
 		velocity = Vector3.ZERO
-		
-		play_car_collision()
-		Sounds.stop_some_sounds(["engine", "engine_accel"])
-		
+
 		if fov_tween:
 			fov_tween.kill()
 			fov_tween = create_tween()
@@ -270,11 +310,12 @@ func _physics_process(delta):
 	
 		cam_pos_tween.tween_property(camera, "position:z", crashed_z, 3).set_ease(Tween.EASE_OUT)
 	else:
-		slomo_tween = create_tween()
-		slomo_tween.tween_property(Engine, "time_scale", 0.01 if GameUI.visible and !autopilot else 1.0, 0.1 if GameUI.visible and !autopilot else 0.1)
+		slomo_tween = create_tween() 
+		slomo_tween.tween_property(Engine, "time_scale", 0.01 if GameUI.visible and !autopilot and current_state != "complete" else 1.0, 0.1)
 		
-		if GameUI.visible and !autopilot:
-			return
+		if current_state != "complete":
+			if GameUI.visible and !autopilot:
+				return
 		
 		if OS.is_debug_build() and Input.is_action_just_released("car_reset") and !GameUI.visible:
 			position.z = 10
@@ -290,23 +331,27 @@ func _physics_process(delta):
 		var deceleration_modifier = 4000.0
 
 		for wheel in get_node("Wheels").get_children():
-			wheel.rotation.y += 1
+			wheel.rotation.y += 0.4
 
-		if !GameUI.visible:
+		if !GameUI.visible and current_state != "complete":
 			var input_dir = Input.get_vector("moveleft", "moveright", "none", "none")
 
-			if Input.is_action_just_pressed("moveleft"):
+			if Input.is_action_pressed("moveleft"):
 				move_to_lane(current_lane - 1)
-			elif Input.is_action_just_pressed("moveright"):
+			elif Input.is_action_pressed("moveright"):
 				move_to_lane(current_lane + 1)
 			
-			if Input.is_action_just_pressed("brake"):
+			if Input.is_action_just_pressed("brake") and velocity.length() > 15:
 				play_engine_braking("short" if velocity.length() < 20 else "long")
 			
+			# Lower modifier = less time to brake 
 			if Input.is_action_pressed("brake"):
-				deceleration_modifier = 600.0
+				print("br", min(velocity.length(), 1))
+				deceleration_modifier = TERMINAL_VELOCITY - velocity.length() / 2
+				MIN_DRIVING_VELOCITY = 0
 			elif Input.is_action_just_released("brake"):
 				deceleration_modifier = 8000.0
+				post_brake_accel_block = false
 				for sound in Sounds.get_all_sounds_in_sink("engine_accel").values():
 					sound.volume_db = -80
 					sound_accelerate_playing = false
@@ -324,19 +369,25 @@ func _physics_process(delta):
 						sound.pitch_scale = 1
 						sound_accelerate_playing = true
 			else:
-				deceleration_amount = DECELERATION * (velocity.length() / deceleration_modifier)
+				deceleration_amount = DECELERATION * (min(velocity.length(), 1) / deceleration_modifier)
 				movement_amount = -deceleration_amount
+				fade_out_accel(movement_amount)
+				
+			if !Input.is_action_just_pressed("brake") and !Input.is_action_just_pressed("accelerate") and velocity.length() < 10 and !post_brake_accel_block and MIN_DRIVING_VELOCITY != 10:
+				print("adding ", max(ACCELERATION * (min(velocity.length(), 3) / 40.0), 0.1), " ", min(velocity.length(), 4))
+				var a = max(ACCELERATION * (min(velocity.length(), 3) / 40.0), 0.1)
+				
+				if velocity.length() > 8:
+					post_brake_accel_block = true
+					MIN_DRIVING_VELOCITY = 10
 
-				# Fade out accelerator if we become too slow
-				if velocity.length() <= MIN_DRIVING_VELOCITY + 10:
-					for sound in Sounds.get_all_sounds_in_sink("engine_accel").values():
-						var vol = max(80 - velocity.length() / 0.2, 0)
-						create_tween().tween_property(sound, "volume_db", -vol, 1)
-						sound_accelerate_playing = false
+				movement_amount = a
 				
-				for sound in Sounds.get_all_sounds_in_sink("engine_accel").values():
-					sound.pitch_scale = clamp(movement_amount / -1 * 10, 0.3, 1)
-				
+		if current_state == "complete":
+			deceleration_amount = DECELERATION * (max(velocity.length(), 0.1) / 200.0)
+			movement_amount = -deceleration_amount
+			fade_out_accel(movement_amount)
+
 		var movement = max(min(velocity.z - movement_amount, -MIN_DRIVING_VELOCITY), -TERMINAL_VELOCITY)
 		velocity.z = move_toward(movement, 0, DRIVING_VELOCITY)
 
@@ -353,12 +404,14 @@ func _physics_process(delta):
 				fov_tween.kill()
 				fov_tween = create_tween()
 			
-			fov_tween.tween_property(camera, "fov", clamp(velocity.length() * 7 - ((1 - deceleration_amount) * 10), 40, 120), 1)
+			fov_tween.tween_property(camera, "fov", clamp(velocity.length() * 4 - ((1 - deceleration_amount) * 10), 50, 120), 1)
 			create_tween().tween_property(camera, "position:y", clamp(velocity.length() / 20, 3, 20), 1)
-			create_tween().tween_property(camera, "position:z", clamp(velocity.length() / 20, 3, 5), 0.25).set_trans(Tween.TRANS_SINE)
+			
+			if current_state != "complete":
+				create_tween().tween_property(camera, "position:z", clamp(velocity.length() / 20, 3, 5), 0.25).set_trans(Tween.TRANS_SINE)
 			
 func get_speed_mph():
-	return velocity.length() * 1.5
+	return velocity.length() * 1
 			
 func get_speed_kmh():
 	return get_speed_mph() * 1.609344

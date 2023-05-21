@@ -1,6 +1,24 @@
-[gd_scene load_steps=2 format=3 uid="uid://bq78olvb0okvp"]
+[gd_scene load_steps=4 format=3 uid="uid://bq78olvb0okvp"]
 
 [ext_resource type="Script" path="res://ui/gameui_hud.gd" id="1_b6wsj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_exlhh"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0, 0, 0, 0.196078)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p27im"]
+bg_color = Color(0.917647, 0.172549, 0.172549, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
 
 [node name="GameUIHud" type="Control" groups=["window_xy"]]
 layout_mode = 3
@@ -23,12 +41,57 @@ theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 24
 
-[node name="BoxContainer" type="BoxContainer" parent="MarginContainer"]
+[node name="ProgressContainer" type="AspectRatioContainer" parent="MarginContainer"]
+visible = false
 layout_mode = 2
+stretch_mode = 1
+
+[node name="BoxContainer" type="BoxContainer" parent="MarginContainer/ProgressContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+vertical = true
+
+[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/ProgressContainer/BoxContainer"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.470588)
+theme_override_constants/outline_size = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_exlhh")
+theme_override_styles/fill = SubResource("StyleBoxFlat_p27im")
+value = 30.0
+
+[node name="PointsContainer" type="BoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_constants/separation = -8
+alignment = 1
+vertical = true
+
+[node name="Points" type="Label" parent="MarginContainer/PointsContainer"]
+custom_minimum_size = Vector2(76, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 64
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PointsText" type="Label" parent="MarginContainer/PointsContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 26
+text = "points"
+horizontal_alignment = 1
+
+[node name="SpeedometerContainer" type="BoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 8
 alignment = 2
 vertical = true
 
-[node name="Speedometer" type="Label" parent="MarginContainer/BoxContainer"]
+[node name="Speedometer" type="Label" parent="MarginContainer/SpeedometerContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 38
 text = "0 mph"

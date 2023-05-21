@@ -58,7 +58,6 @@ func act(tick):
 	if car.velocity.length() <= 0:
 		return
 	
-	car.global_position.x = point.x
 	car.global_position.y = point.y
 	
 	car.velocity = Vector3(point.velocity[0], point.velocity[1], point.velocity[2])
@@ -67,8 +66,10 @@ func act(tick):
 		if previous_point.lane != point.lane:
 			print("Moving lanes")
 			car.move_to_lane(point.lane)
-		else:
-			car.global_position.z = point.z
+		elif !car.is_moving_lanes:
+			print("moving z")
+			create_tween().tween_property(car, "global_position:x", point.x, 0.1)
+			create_tween().tween_property(car, "global_position:z", point.z, 0.1)
 	
 	previous_point = point
 	

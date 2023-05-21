@@ -1,10 +1,10 @@
 extends Node
 
-@export var sv_acceleration = 2
-@export var sv_deceleration = 10
+@export var sv_acceleration = 0.75
+@export var sv_deceleration = 20
 @export var sv_gravity = 0
 @export var sv_lane_change_x = 5
-@export var sv_terminal_velocity = 80
+@export var sv_terminal_velocity = 120
 @export var sv_terminal_velocity_idle = 10
 
 @export var cl_lane_change_shake_degree = 0.05
