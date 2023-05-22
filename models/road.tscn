@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bqu3t3qvbbm3n"]
+[gd_scene load_steps=18 format=3 uid="uid://bqu3t3qvbbm3n"]
 
 [ext_resource type="Texture2D" uid="uid://tfockiebrqlm" path="res://textures/road_marking.png" id="1_7il0w"]
 [ext_resource type="Script" path="res://models/road.gd" id="1_gvxq5"]
@@ -6,6 +6,8 @@
 [ext_resource type="Material" uid="uid://b16ueay5pqsll" path="res://materials/pavement.tres" id="3_olrfc"]
 [ext_resource type="Texture2D" uid="uid://chl6dctidprwf" path="res://textures/pavement-curb.png" id="4_7hxxe"]
 [ext_resource type="Material" uid="uid://sqt2qt2y61lv" path="res://materials/grass.tres" id="6_u7moo"]
+[ext_resource type="PackedScene" uid="uid://bpp413k8egp0f" path="res://models/house1.tscn" id="7_k32nc"]
+[ext_resource type="PackedScene" uid="uid://cvub0cayd0qhv" path="res://models/traffic_light.tscn" id="8_ip0ml"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ckg2y"]
 albedo_color = Color(0.737255, 0.0784314, 0, 1)
@@ -172,8 +174,38 @@ metadata/_edit_group_ = true
 [node name="HDGround" type="CSGBox3D" parent="RoadContainer"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.575993, -107)
 use_collision = true
-size = Vector3(435.969, 0.001, 214)
+size = Vector3(62.0041, 0.001, 214)
 material = ExtResource("6_u7moo")
+
+[node name="house1" parent="RoadContainer" instance=ExtResource("7_k32nc")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -13.9523, -0.129027, -30.2344)
+
+[node name="house2" parent="RoadContainer" instance=ExtResource("7_k32nc")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -13.9523, -0.129027, -20.6584)
+
+[node name="house3" parent="RoadContainer" instance=ExtResource("7_k32nc")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -13.9523, -0.129027, -11.0245)
+
+[node name="house4" parent="RoadContainer" instance=ExtResource("7_k32nc")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -13.9523, -0.129027, -1.44848)
+
+[node name="house5" parent="RoadContainer" instance=ExtResource("7_k32nc")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -13.9523, -0.129027, -84.0428)
+
+[node name="house6" parent="RoadContainer" instance=ExtResource("7_k32nc")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -13.9523, -0.129027, -74.4668)
+
+[node name="house7" parent="RoadContainer" instance=ExtResource("7_k32nc")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -13.9523, -0.129027, -64.8329)
+
+[node name="house8" parent="RoadContainer" instance=ExtResource("7_k32nc")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -13.9523, -0.129027, -55.2569)
+
+[node name="house9" parent="RoadContainer" instance=ExtResource("7_k32nc")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -13.9523, -0.129027, -93.6338)
+
+[node name="traffic_light" parent="RoadContainer" instance=ExtResource("8_ip0ml")]
+transform = Transform3D(-1.31134e-07, 0, 3, 0, 3, 0, -3, 0, -1.31134e-07, -4.78902, -0.750871, -50.0561)
 
 [node name="Road" type="Node3D" parent="RoadContainer"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -4.18673, 0, -42.1717)
@@ -284,6 +316,120 @@ material = SubResource("StandardMaterial3D_rms76")
 metadata/_edit_group_ = true
 
 [node name="RoadSurface" type="CSGBox3D" parent="RoadContainer/Road2/RoadContainer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.453, -107)
+size = Vector3(13.64, 0.001, 214)
+material = SubResource("StandardMaterial3D_vguc0")
+metadata/_edit_group_ = true
+
+[node name="Road3" type="Node3D" parent="RoadContainer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -80.2084, 0, -35.2093)
+
+[node name="RoadContainer" type="Node3D" parent="RoadContainer/Road3"]
+
+[node name="DebugMarkings" type="Node3D" parent="RoadContainer/Road3/RoadContainer"]
+
+[node name="BoundaryEnd" type="CSGBox3D" parent="RoadContainer/Road3/RoadContainer/DebugMarkings"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.45, -213.935)
+size = Vector3(14, 0.002, 0.122)
+material = SubResource("StandardMaterial3D_ckg2y")
+metadata/_edit_group_ = true
+
+[node name="RoadPavements" type="Node3D" parent="RoadContainer/Road3/RoadContainer"]
+
+[node name="PavementL" type="Node3D" parent="RoadContainer/Road3/RoadContainer/RoadPavements"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.401, -0.203787, -107)
+
+[node name="Cube2" type="MeshInstance3D" parent="RoadContainer/Road3/RoadContainer/RoadPavements/PavementL"]
+transform = Transform3D(0.202, 0, 0, 0, 0.202, 0, 0, 0, 107, 1.203, -0.038, 0)
+mesh = SubResource("ArrayMesh_ogcgd")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_57dwj")
+
+[node name="PavementBox" type="CSGBox3D" parent="RoadContainer/Road3/RoadContainer/RoadPavements/PavementL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.217793, 0, 0)
+size = Vector3(2.73142, 0.3, 214)
+material = ExtResource("3_olrfc")
+metadata/_edit_group_ = true
+
+[node name="PavementR" type="Node3D" parent="RoadContainer/Road3/RoadContainer/RoadPavements"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.21963, -0.203787, -107)
+
+[node name="Cube2" type="MeshInstance3D" parent="RoadContainer/Road3/RoadContainer/RoadPavements/PavementR"]
+transform = Transform3D(-8.8297e-09, -0.202, 0, 0.202, -8.8297e-09, 0, 0, 0, 107, 10.342, -0.038, 0)
+mesh = SubResource("ArrayMesh_ogcgd")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_57dwj")
+
+[node name="PavementBox" type="CSGBox3D" parent="RoadContainer/Road3/RoadContainer/RoadPavements/PavementR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.786, 0, 0)
+size = Vector3(2.91236, 0.3, 214)
+material = ExtResource("3_olrfc")
+metadata/_edit_group_ = true
+
+[node name="RoadMarkings" type="CSGBox3D" parent="RoadContainer/Road3/RoadContainer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.45, -107)
+size = Vector3(0.122, 0.002, 213.39)
+material = SubResource("StandardMaterial3D_rms76")
+metadata/_edit_group_ = true
+
+[node name="RoadSurface" type="CSGBox3D" parent="RoadContainer/Road3/RoadContainer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.453, -107)
+size = Vector3(13.64, 0.001, 214)
+material = SubResource("StandardMaterial3D_vguc0")
+metadata/_edit_group_ = true
+
+[node name="Road4" type="Node3D" parent="RoadContainer"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 221.264, 0, -12.6917)
+
+[node name="RoadContainer" type="Node3D" parent="RoadContainer/Road4"]
+
+[node name="DebugMarkings" type="Node3D" parent="RoadContainer/Road4/RoadContainer"]
+
+[node name="BoundaryEnd" type="CSGBox3D" parent="RoadContainer/Road4/RoadContainer/DebugMarkings"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.45, -213.935)
+size = Vector3(14, 0.002, 0.122)
+material = SubResource("StandardMaterial3D_ckg2y")
+metadata/_edit_group_ = true
+
+[node name="RoadPavements" type="Node3D" parent="RoadContainer/Road4/RoadContainer"]
+
+[node name="PavementL" type="Node3D" parent="RoadContainer/Road4/RoadContainer/RoadPavements"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.401, -0.203787, -107)
+
+[node name="Cube2" type="MeshInstance3D" parent="RoadContainer/Road4/RoadContainer/RoadPavements/PavementL"]
+transform = Transform3D(0.202, 0, 0, 0, 0.202, 0, 0, 0, 107, 1.203, -0.038, 0)
+mesh = SubResource("ArrayMesh_ogcgd")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_57dwj")
+
+[node name="PavementBox" type="CSGBox3D" parent="RoadContainer/Road4/RoadContainer/RoadPavements/PavementL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.217793, 0, 0)
+size = Vector3(2.73142, 0.3, 214)
+material = ExtResource("3_olrfc")
+metadata/_edit_group_ = true
+
+[node name="PavementR" type="Node3D" parent="RoadContainer/Road4/RoadContainer/RoadPavements"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.21963, -0.203787, -107)
+
+[node name="Cube2" type="MeshInstance3D" parent="RoadContainer/Road4/RoadContainer/RoadPavements/PavementR"]
+transform = Transform3D(-8.8297e-09, -0.202, 0, 0.202, -8.8297e-09, 0, 0, 0, 107, 10.342, -0.038, 0)
+mesh = SubResource("ArrayMesh_ogcgd")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_57dwj")
+
+[node name="PavementBox" type="CSGBox3D" parent="RoadContainer/Road4/RoadContainer/RoadPavements/PavementR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.786, 0, 0)
+size = Vector3(2.91236, 0.3, 214)
+material = ExtResource("3_olrfc")
+metadata/_edit_group_ = true
+
+[node name="RoadMarkings" type="CSGBox3D" parent="RoadContainer/Road4/RoadContainer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.45, -107)
+size = Vector3(0.122, 0.002, 213.39)
+material = SubResource("StandardMaterial3D_rms76")
+metadata/_edit_group_ = true
+
+[node name="RoadSurface" type="CSGBox3D" parent="RoadContainer/Road4/RoadContainer"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.453, -107)
 size = Vector3(13.64, 0.001, 214)
 material = SubResource("StandardMaterial3D_vguc0")

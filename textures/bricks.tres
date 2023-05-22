@@ -1,0 +1,21 @@
+[gd_resource type="StandardMaterial3D" load_steps=4 format=3 uid="uid://dxyyeofj43v5t"]
+
+[ext_resource type="Texture2D" uid="uid://c6qu7xc6oww41" path="res://textures/bricks_albedo.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://b4uvrff0qdek3" path="res://textures/bricks_orm.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://vsek54yflow1" path="res://textures/bricks_heightmap.png" id="4"]
+
+[resource]
+albedo_texture = ExtResource("1")
+roughness_texture = ExtResource("2")
+roughness_texture_channel = 1
+ao_enabled = true
+ao_texture = ExtResource("2")
+heightmap_enabled = true
+heightmap_scale = 7.5
+heightmap_deep_parallax = true
+heightmap_min_layers = 8
+heightmap_max_layers = 32
+heightmap_texture = ExtResource("4")
+uv1_scale = Vector3(2, 2, 2)
+uv1_triplanar = true
+uv1_world_triplanar = true

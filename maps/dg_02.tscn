@@ -1,10 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://b0gpcayxbyogj"]
+[gd_scene load_steps=6 format=3 uid="uid://b0gpcayxbyogj"]
 
 [ext_resource type="Script" path="res://maps/dg_02.gd" id="1_orgwb"]
 [ext_resource type="PackedScene" uid="uid://nns75451j2y4" path="res://nodes/LevelEndBrush.tscn" id="2_mduxq"]
 [ext_resource type="PackedScene" uid="uid://cvub0cayd0qhv" path="res://models/traffic_light.tscn" id="3_0ysq8"]
 [ext_resource type="PackedScene" uid="uid://bqu3t3qvbbm3n" path="res://models/road.tscn" id="4_d6uc5"]
-[ext_resource type="PackedScene" uid="uid://c7sn47dfutgqm" path="res://models/junction_road.tscn" id="5_dthsf"]
 [ext_resource type="PackedScene" uid="uid://qdxxlu3kmagh" path="res://nodes/LevelStartBrush.tscn" id="6_0btku"]
 
 [node name="Level" type="Node3D"]
@@ -35,6 +34,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.65237, 0, 9.56705)
 transform = Transform3D(-1.31134e-07, 0, 3, 0, 3, 0, -3, 0, -1.31134e-07, 1.63561, -0.750871, -46.4112)
 
 [node name="Road" parent="." instance=ExtResource("4_d6uc5")]
-
-[node name="JunctionRoad" parent="." instance=ExtResource("5_dthsf")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.889835, 0, -64.4206)

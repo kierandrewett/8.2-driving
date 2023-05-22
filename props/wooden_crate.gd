@@ -22,4 +22,8 @@ func destroy(car: CharacterBody3D):
 
 func _on_body_entered(body: CharacterBody3D):
 	if body.name == "Car" and body is CharacterBody3D:
+		# This is needed so we can't break props the second we spawn in
+		if body.position.z >= -10:
+			return
+		
 		destroy(body)

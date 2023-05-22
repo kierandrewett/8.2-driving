@@ -96,6 +96,18 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_v6t0d")
 text = "Start Game"
 alignment = 0
 
+[node name="RestartButton" type="Button" parent="MainMenu/BoxContainer/BoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.666667)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxEmpty_iy7lc")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_40qh7")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w4f6x")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_v6t0d")
+text = "Restart Game"
+alignment = 0
+
 [node name="OptionsButton" type="Button" parent="MainMenu/BoxContainer/BoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 0.666667)
@@ -308,6 +320,9 @@ max_value = 0.0
 [connection signal="mouse_entered" from="MainMenu/BoxContainer/BoxContainer/StartButton" to="." method="on_button_mouse_entered"]
 [connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/StartButton" to="." method="on_start_game_pressed"]
 [connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/StartButton" to="." method="on_button_mouse_clicked"]
+[connection signal="mouse_entered" from="MainMenu/BoxContainer/BoxContainer/RestartButton" to="." method="on_button_mouse_entered"]
+[connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/RestartButton" to="." method="on_button_mouse_clicked"]
+[connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/RestartButton" to="." method="on_restart_game_pressed"]
 [connection signal="mouse_entered" from="MainMenu/BoxContainer/BoxContainer/OptionsButton" to="." method="on_button_mouse_entered"]
 [connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/OptionsButton" to="." method="on_options_pressed"]
 [connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/OptionsButton" to="." method="on_button_mouse_clicked"]
@@ -318,8 +333,8 @@ max_value = 0.0
 [connection signal="text_submitted" from="Console/ConsoleContainer/ConsoleInput" to="Console" method="on_text_submitted"]
 [connection signal="visibility_changed" from="Options" to="Options" method="on_visibility_changed"]
 [connection signal="button_down" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_down"]
-[connection signal="button_up" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_up"]
 [connection signal="button_up" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_leave"]
+[connection signal="button_up" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_up"]
 [connection signal="mouse_entered" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_enter"]
 [connection signal="mouse_exited" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_leave"]
 [connection signal="mouse_entered" from="Options/BoxContainer/Menus/Main/ControlsButton" to="." method="on_button_mouse_entered"]

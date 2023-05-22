@@ -1,13 +1,14 @@
 [gd_scene load_steps=2 format=3 uid="uid://dxd3coksh7i1y"]
 
-[ext_resource type="Environment" uid="uid://bfpbg70tp0ux6" path="res://environment.tres" id="1_rst13"]
+[ext_resource type="Environment" uid="uid://bynfj3jppkks5" path="res://outside_world_enviroment.tres" id="1_0sqpq"]
 
 [node name="blank" type="Node3D"]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = ExtResource("1_rst13")
-
 [node name="Viewport" type="Node" parent="."]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Viewport"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 10.463, 0)
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Viewport"]
+environment = ExtResource("1_0sqpq")
+
+[node name="Sun" type="DirectionalLight3D" parent="Viewport"]
+transform = Transform3D(1, 0, 0, 0, 0.654741, 0.755853, 0, -0.755853, 0.654741, 0, 33.616, 4.30456)
+shadow_enabled = true

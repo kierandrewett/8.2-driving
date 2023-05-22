@@ -1,0 +1,28 @@
+[gd_resource type="StandardMaterial3D" load_steps=6 format=3 uid="uid://dwuenglqvq04w"]
+
+[ext_resource type="Texture2D" uid="uid://fahy7v6fyifi" path="res://materials/concrete_albedo.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://64cyjxw3hoh7" path="res://materials/concrete_orm.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://cu8phv4xmpma4" path="res://materials/concrete_normal.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://dayysvw5bib8" path="res://materials/concrete_heightmap.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://ctx5qqjpdixtf" path="res://materials/concrete_emission.png" id="5"]
+
+[resource]
+albedo_texture = ExtResource("1")
+metallic = 1.0
+metallic_texture = ExtResource("2")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("2")
+roughness_texture_channel = 1
+emission_enabled = true
+emission_texture = ExtResource("5")
+normal_enabled = true
+normal_texture = ExtResource("3")
+ao_enabled = true
+ao_texture = ExtResource("2")
+heightmap_enabled = true
+heightmap_scale = 12.5
+heightmap_deep_parallax = true
+heightmap_min_layers = 8
+heightmap_max_layers = 32
+heightmap_texture = ExtResource("4")
+uv1_triplanar = true

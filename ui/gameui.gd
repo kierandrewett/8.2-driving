@@ -38,7 +38,9 @@ func on_window_resize():
 		node.set_size(Vector2(node.get_size().x, y))
 
 func on_window_blur():
-	GameUI.visible = true
+	await get_tree().create_timer(0.1).timeout
+	if visible == false:
+		visible = true
 
 func _process(delta):
 	if Input.is_action_just_pressed("open_gameui"):
@@ -52,9 +54,11 @@ func _process(delta):
 	if get_node_or_null("/root/Car") and !get_node_or_null("/root/Car").autopilot and get_node_or_null("/root/Car").current_state != "complete":
 		Sounds.set_paused_sounds(GameUI.visible, ["master", "crash"])
 
+	get_node("MainMenu/BoxContainer/BoxContainer/RestartButton").visible = len(maps_loaded) >= 1
+
 	pass
 	
-func on_start_game_pressed():
+func on_start_game_pressed(restart = false):
 	var car = get_node_or_null("/root/Car")
 	
 	if !car:
@@ -75,18 +79,29 @@ func on_start_game_pressed():
 	
 	var current_state = car.current_state
 	
-	if car.crashed or current_state == "complete":
+	if car.crashed or current_state == "complete" or restart:
 		car = get_node("/root/Car")
 		
 		if current_state == "complete":				
 			if !car.autopilot and current_map_index >= len(maps_loaded):
 				return
 
-		if car.crashed:
+		if car.crashed or restart:
 			reload_maps()
 			car.reset()
 			
 		car.reset()
+
+func on_restart_game_pressed():
+	var node = get_node("MainMenu/BoxContainer/BoxContainer/RestartButton")
+	if node.text.ends_with("Restart Game?"):
+		on_start_game_pressed(true)
+	else:
+		node.text = node.text + "?"
+		
+	get_tree().create_timer(2).timeout.connect(func ():
+		node.text = "Restart Game"
+	)
 
 func on_options_pressed():
 	get_node("MainMenu").visible = !get_node("MainMenu").visible
@@ -166,6 +181,10 @@ func reload_maps():
 	load_maps(true)
 	
 func load_maps(reloading = false):
+	var car = get_node_or_null("/root/Car")
+	if car:
+		car.position.z = 0
+	
 	for i in range(0, 2):
 		preload_map(i, reloading, i)
 		
