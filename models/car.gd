@@ -352,6 +352,9 @@ func _physics_process(delta):
 			
 			if Input.is_action_just_pressed("brake") and velocity.length() > 15:
 				play_engine_braking("short" if velocity.length() < 20 else "long")
+				for sound in Sounds.get_all_sounds_in_sink("engine_accel").values():
+					create_tween().tween_property(sound, "volume_db", -80, 2)
+					sound_accelerate_playing = true
 			
 			# Lower modifier = less time to brake 
 			if Input.is_action_pressed("brake"):
@@ -381,7 +384,7 @@ func _physics_process(delta):
 				movement_amount = -deceleration_amount
 				fade_out_accel(movement_amount)
 				
-			if !Input.is_action_pressed("accelerate") and !Input.is_action_pressed("brake") and velocity.length() < 9:
+			if !Input.is_action_pressed("brake") and velocity.length() < 9:
 				movement_amount = ensure_moving_post_braking()
 				
 		if current_state == "complete":

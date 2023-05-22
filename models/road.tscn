@@ -154,7 +154,7 @@ shape = SubResource("BoxShape3D_enjyo")
 
 [node name="PavementBox" type="CSGBox3D" parent="RoadContainer/RoadPavements/PavementR"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.786, 0, 0)
-size = Vector3(2.91236, 0.3, 214)
+size = Vector3(2.91236, 0.3, 201.986)
 material = ExtResource("3_olrfc")
 metadata/_edit_group_ = true
 
