@@ -296,8 +296,6 @@ func _process(delta):
 func _physics_process(delta):
 	var collision = get_slide_collision(get_slide_collision_count() - 1) if get_slide_collision_count() else null
 	
-	velocity.y = 0
-	
 	if collision:
 		if !crashed and !collisions.has(collision.get_collider_rid()):
 			collisions.append(collision.get_collider_rid())

@@ -7,7 +7,7 @@ extends Node
 @export var sv_terminal_velocity = 120
 @export var sv_terminal_velocity_idle = 10
 
-@export var cl_lane_change_shake_degree = 0.05
+@export var cl_lane_change_shake_degree = 0.075
 
 @export var r_road_frequency = 10
 

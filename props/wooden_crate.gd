@@ -12,7 +12,8 @@ func destroy(car: CharacterBody3D):
 		for node in Utils.get_all_nodes_of_type(broken_crate, "RigidBody3D"):
 			node.apply_impulse(Vector3(0.1, 0.1, 0.1))
 			get_tree().create_timer(2).timeout.connect(func ():
-				node.queue_free()
+				if !car.crashed:
+					node.queue_free()
 			)
 		
 		visible = false

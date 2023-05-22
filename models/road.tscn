@@ -1,10 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://bqu3t3qvbbm3n"]
+[gd_scene load_steps=16 format=3 uid="uid://bqu3t3qvbbm3n"]
 
 [ext_resource type="Texture2D" uid="uid://tfockiebrqlm" path="res://textures/road_marking.png" id="1_7il0w"]
 [ext_resource type="Script" path="res://models/road.gd" id="1_gvxq5"]
 [ext_resource type="Texture2D" uid="uid://culk3omrqr6ow" path="res://textures/asphalt.png" id="2_isq5e"]
 [ext_resource type="Material" uid="uid://b16ueay5pqsll" path="res://materials/pavement.tres" id="3_olrfc"]
 [ext_resource type="Texture2D" uid="uid://chl6dctidprwf" path="res://textures/pavement-curb.png" id="4_7hxxe"]
+[ext_resource type="Material" uid="uid://sqt2qt2y61lv" path="res://materials/grass.tres" id="6_u7moo"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ckg2y"]
 albedo_color = Color(0.737255, 0.0784314, 0, 1)
@@ -168,10 +169,11 @@ size = Vector3(13.64, 0.001, 214)
 material = SubResource("StandardMaterial3D_vguc0")
 metadata/_edit_group_ = true
 
-[node name="Ground" type="CSGBox3D" parent="RoadContainer"]
+[node name="HDGround" type="CSGBox3D" parent="RoadContainer"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.575993, -107)
 use_collision = true
-size = Vector3(341.848, 0.001, 214)
+size = Vector3(435.969, 0.001, 214)
+material = ExtResource("6_u7moo")
 
 [node name="Road" type="Node3D" parent="RoadContainer"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -4.18673, 0, -42.1717)

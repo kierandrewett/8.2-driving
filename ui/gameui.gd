@@ -83,7 +83,7 @@ func on_start_game_pressed():
 				return
 
 		if car.crashed:
-			reload_map()
+			reload_maps()
 			car.reset()
 			
 		car.reset()
@@ -113,7 +113,7 @@ func on_game_completed():
 		set_button_text("You did it!")
 	)
 
-func preload_map(id, reloading = false):
+func preload_map(id, reloading = false, map_index = -1):
 	var map_path = "res://maps/dg_%02d.tscn" % (id + 1)
 	var map = Maps.load(map_path, 0)
 	var map_offset = 0
@@ -130,18 +130,18 @@ func preload_map(id, reloading = false):
 				var lst = Utils.get_node_by_name(maps_loaded[index - 1], "LevelEndBrush")
 				map_start_positions.insert(index, -(map_start_positions[index - 1] - lst.position.z))
 		else:
-			maps_loaded[current_map_index] = map
+			maps_loaded[map_index if reloading and map_index >= 0 else current_map_index] = map
 			
 		if !reloading:
 			map_offset = map_start_positions[len(maps_loaded) - 1]
 		else:
-			map_offset = map_start_positions[current_map_index]
+			map_offset = map_start_positions[map_index if reloading and map_index >= 0 else current_map_index]
 			
 		map.position.z -= (map_offset / -1) + 40
 	else:
 		print("Failed to preload map at '%s'." % [map_path])
 	
-func goto_map(index):
+func goto_map(index, teleport = true):
 	if index >= len(maps_loaded):
 		print("No more maps to load :(")
 		return
@@ -150,26 +150,24 @@ func goto_map(index):
 	
 	var car = get_node_or_null("/root/Car")
 	
-	if index == current_map_index:
-		if car:
-			car.global_position.z = map_start_positions[current_map_index]
-	
 	current_map_index = index
+	
+	if car and teleport:
+		car.global_position.z = map_start_positions[current_map_index]
 	
 	if car.autopilot:
 		NavMeshes.play(map_loaded.scene_file_path.split("res://maps/")[1].replace(".tscn", ""))
 	
-func reload_map():
-	var map_loaded = maps_loaded[current_map_index]
+func reload_maps():
+	for map in maps_loaded:
+		if map != null and map.get_parent() != null:
+			map.get_parent().remove_child(map)
 	
-	map_loaded.queue_free()
+	load_maps(true)
 	
-	preload_map(current_map_index, true)
-	goto_map(current_map_index)
-	
-func load_maps():
+func load_maps(reloading = false):
 	for i in range(0, 2):
-		preload_map(i)
+		preload_map(i, reloading, i)
 		
 	goto_map(0)
 	

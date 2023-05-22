@@ -11,12 +11,12 @@ func _process(delta):
 
 	lines.append("%s fps" % [str(Engine.get_frames_per_second())])
 
-	if GameUI.map_loaded and GameUI.map_loaded.scene_file_path:
+	if GameUI.map_loaded and GameUI.map_loaded != null and GameUI.map_loaded.scene_file_path:
 		lines[0] += " on %s" % [GameUI.map_loaded.scene_file_path]
 		
 	var car = get_node("/root/Car")
 		
-	if car:
+	if car and GameUI.map_loaded != null:
 		lines.append("pos: %s" % ["%s %s %s" % ["%.2f" % car.global_position.x, "%.2f" % car.global_position.y, "%.2f" % car.global_position.z] if car else ""])
 		lines.append("ang: %s" % ["%s %s %s %s %s %s %s" % ["%.2f" % car.camera.position.x, "%.2f" % car.camera.position.y, "%.2f" % car.camera.position.z, "%.2f" % car.camera.rotation.x, "%.2f" % car.camera.rotation.y, "%.2f" % car.camera.rotation.z, "%.2f" % car.get_floor_angle()] if car else ""])
 		lines.append("vel: %s" % ["%.2f" % (car.velocity.length() * 43.333 if car and car.velocity else 0.0)])
