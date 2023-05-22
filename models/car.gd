@@ -182,7 +182,7 @@ func move_to_lane(id):
 			pavement_hit_tween.kill()
 			pavement_hit_tween = get_tree().create_tween()
 		
-		pavement_hit_tween.tween_property(camera, "rotation:z", -line_rotation, 0.5 / 4).finished.connect(func ():
+		pavement_hit_tween.tween_property(camera, "rotation:z", -line_rotation if direction == "left" else line_rotation, 0.5 / 4).finished.connect(func ():
 			create_tween().tween_property(camera, "rotation:z", 0, 0.5)
 		)
 		create_tween().tween_property(camera, "rotation:z", 0, 0.5)
