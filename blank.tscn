@@ -1,32 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://dxd3coksh7i1y"]
+[gd_scene load_steps=2 format=3 uid="uid://dxd3coksh7i1y"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_tqgyy"]
-
-[sub_resource type="Sky" id="Sky_r6urf"]
-sky_material = SubResource("ProceduralSkyMaterial_tqgyy")
-
-[sub_resource type="Environment" id="Environment_pilta"]
-background_mode = 1
-background_color = Color(1, 1, 1, 1)
-sky = SubResource("Sky_r6urf")
-reflected_light_source = 2
-ssr_enabled = true
-ssao_enabled = true
-ssil_enabled = true
-sdfgi_enabled = true
-volumetric_fog_enabled = true
-volumetric_fog_density = 0.02
-volumetric_fog_albedo = Color(0.917647, 0.917647, 0.917647, 1)
-volumetric_fog_length = 1024.0
-volumetric_fog_ambient_inject = 2.0
+[ext_resource type="Environment" uid="uid://bfpbg70tp0ux6" path="res://environment.tres" id="1_rst13"]
 
 [node name="blank" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_pilta")
+environment = ExtResource("1_rst13")
 
 [node name="Viewport" type="Node" parent="."]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Viewport"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 10.463, 0)
-visible = false

@@ -49,6 +49,4 @@ func fixup_map(node = null):
 			if "position" in road and road.name == "RoadLevel" or road.name == "RoadContainer":
 				road.position.y -= car_shape.x * 2
 				road.position.x += car_shape.z * 2
-	
-			if road.name == "RoadLevel":
-				road.position.z -= 1.9
+

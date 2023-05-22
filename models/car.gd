@@ -190,7 +190,7 @@ func move_to_lane(id):
 		create_tween().tween_property(camera, "rotation:z", 0, 0.5)
 		return
 		
-	if velocity.length() < 2:
+	if floor(velocity.length()) <= 0:
 		return
 		
 	indicator = true
@@ -233,7 +233,7 @@ func play_engine_braking(type = "short"):
 	if sound_braking_playing == false:
 		sound_braking_playing = true
 	
-		Sounds.play_sound("res://sounds/engine_%s.wav" % ["brake_short" if type == "short" else "brake_long"], get_tree().root, randf_range(0.75, 1), "engine_brake").finished.connect(func ():
+		Sounds.play_sound("res://sounds/engine_%s.wav" % ["brake_short" if type == "short" else "brake_long"], get_tree().root, Globals.volume, randf_range(0.75, 1), "engine_brake").finished.connect(func ():
 			sound_braking_playing = false
 		)
 
@@ -266,6 +266,15 @@ func on_end_game(ending):
 		GameUI.visible = true
 		GameUI.get_node("Gradient").modulate.a = 0.75
 	)
+
+func ensure_moving_post_braking():
+	var acc = max(ACCELERATION * (min(velocity.length(), 3) / 40.0), 0.1)
+				
+	if velocity.length() > 8:
+		post_brake_accel_block = true
+		MIN_DRIVING_VELOCITY = 10
+
+	return acc
 
 func _process(delta):
 	# start reset vars
@@ -376,14 +385,8 @@ func _physics_process(delta):
 				movement_amount = -deceleration_amount
 				fade_out_accel(movement_amount)
 				
-			if !Input.is_action_just_pressed("brake") and !Input.is_action_just_pressed("accelerate") and velocity.length() < 10 and !post_brake_accel_block and MIN_DRIVING_VELOCITY != 10:
-				var a = max(ACCELERATION * (min(velocity.length(), 3) / 40.0), 0.1)
-				
-				if velocity.length() > 8:
-					post_brake_accel_block = true
-					MIN_DRIVING_VELOCITY = 10
-
-				movement_amount = a
+			if !Input.is_action_pressed("accelerate") and !Input.is_action_pressed("brake") and velocity.length() < 9:
+				movement_amount = ensure_moving_post_braking()
 				
 		if current_state == "complete":
 			deceleration_amount = DECELERATION * (max(velocity.length(), 0.1) / 200.0)
