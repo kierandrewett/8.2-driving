@@ -12,4 +12,8 @@ func _on_body_entered(node):
 			GameUI.on_start_game_pressed()
 
 			GameUI.preload_map(len(GameUI.maps_loaded))
-			GameUI.goto_map(GameUI.current_map_index + 1)
+			
+			if GameUI.current_map_index + 1 >= len(GameUI.maps_loaded):
+				GameUI.on_game_completed()
+			else:
+				GameUI.goto_map(GameUI.current_map_index + 1)

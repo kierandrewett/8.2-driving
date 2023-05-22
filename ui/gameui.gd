@@ -104,6 +104,15 @@ func on_button_mouse_clicked():
 func set_button_text(text = "Start Game"):
 	get_node("MainMenu/BoxContainer/BoxContainer/StartButton").text = text
 
+func on_game_completed():
+	var car = get_node("/root/Car")
+	visible = true
+	car.autopilot = true
+
+	get_tree().create_timer(1).timeout.connect(func ():
+		set_button_text("You did it!")
+	)
+
 func preload_map(id, reloading = false):
 	var map_path = "res://maps/dg_%02d.tscn" % (id + 1)
 	var map = Maps.load(map_path, 0)
@@ -113,8 +122,13 @@ func preload_map(id, reloading = false):
 		if !reloading:
 			var index = max(len(maps_loaded), 0)
 			maps_loaded.insert(index, map)
-			var lst = Utils.get_node_by_name(map, "LevelEndBrush")
-			map_start_positions.insert(index, lst.position.z)
+			
+			if index <= 0:
+				var lst = Utils.get_node_by_name(map, "LevelStartBrush")
+				map_start_positions.insert(index, lst.position.z)
+			else:
+				var lst = Utils.get_node_by_name(maps_loaded[index - 1], "LevelEndBrush")
+				map_start_positions.insert(index, -(map_start_positions[index - 1] - lst.position.z))
 		else:
 			maps_loaded[current_map_index] = map
 			

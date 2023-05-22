@@ -68,12 +68,16 @@ func _process(delta):
 		points.text = "%02d" % (points_int)
 		points_jig()
 	
-	var level_end = Utils.get_node_by_name(GameUI.map_loaded.get_node("RoadLevel"), "LevelEndBrush")
+	var level_start = Utils.get_node_by_name(GameUI.maps_loaded[GameUI.current_map_index - 1], "LevelEndBrush")
+	var level_end = Utils.get_node_by_name(GameUI.map_loaded, "LevelEndBrush")
+	
+	var start_pos = car.start_position.z if GameUI.current_map_index == 0 else level_start.global_position.z
+	var end_pos = level_end.global_position.z
 	
 	if !level_end:
 		return
 
-	var percent = clamp((car.global_position.z - car.start_position.z) / ((level_end.global_position.z + 3) - car.start_position.z) * 100, 0, 100)
+	var percent = clamp((car.global_position.z - start_pos) / ((end_pos + 3) - start_pos) * 100, 0, 100)
 	
 	progress.value = percent
 	

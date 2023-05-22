@@ -128,8 +128,6 @@ func reset():
 	
 	reset_camera()
 	
-	position.x = 0
-	
 	Sounds.stop_some_sounds(["engine", "engine_accel", "indicator"])
 	init_sounds()
 	
