@@ -32,8 +32,6 @@ func fixup_map(node = null):
 		var car_shape = get_node("/root/Car/Collision").shape.size
 
 		for road in all_road_nodes:
-			print(road.name, " ", road.get_parent().name, " ", road.get_parent().get_parent().name, " ")
-			
 			# In our map, we add the road in so we know where to put the obstacles
 			# Since the obstacles are a child of the Road scene, we need to move 
 			# the obstacles outside and then remove the road itself.
@@ -46,7 +44,7 @@ func fixup_map(node = null):
 				parent.queue_free()
 				
 			if road.name == "RoadContainer" and road.get_parent().name == "Road" and road.get_parent().get_parent().name == "Level" or road.get_parent().get_parent().name.begins_with("@Level@"):
-				road.get_parent().queue_free()
+				road.get_parent().visible = false
 
 			if "position" in road and road.name == "RoadLevel" or road.name == "RoadContainer":
 				road.position.y -= car_shape.x * 2

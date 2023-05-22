@@ -12,10 +12,9 @@ extends Node
 @export var r_road_frequency = 10
 
 @export var volume = 1
-
 @export var hud_scale = 1
-
 @export var developer = OS.is_debug_build()
+@export var fullscreen = !OS.is_debug_build()
 
 func _ready():
 	sv_gravity = ProjectSettings.get_setting("physics/3d/default_gravity")

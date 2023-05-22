@@ -20,6 +20,8 @@ func _ready():
 	get_node("Options").visible = false
 	
 	slomo_tween = create_tween()
+	
+	init_resolution()
 
 func on_window_resize():
 	var size = get_viewport_rect().size
@@ -49,7 +51,7 @@ func _process(delta):
 	
 	if get_node_or_null("/root/Car") and !get_node_or_null("/root/Car").autopilot and get_node_or_null("/root/Car").current_state != "complete":
 		Sounds.set_paused_sounds(GameUI.visible, ["master", "crash"])
-		
+
 	pass
 	
 func on_start_game_pressed():
@@ -72,7 +74,6 @@ func on_start_game_pressed():
 	set_button_text("Resume Game")
 	
 	var current_state = car.current_state
-	print("current_state ", current_state)
 	
 	if car.crashed or current_state == "complete":
 		car = get_node("/root/Car")
@@ -82,8 +83,7 @@ func on_start_game_pressed():
 				return
 
 		if car.crashed:
-			print(current_map_index)
-			goto_map(current_map_index)
+			reload_map()
 			car.reset()
 			
 		car.reset()
@@ -104,23 +104,28 @@ func on_button_mouse_clicked():
 func set_button_text(text = "Start Game"):
 	get_node("MainMenu/BoxContainer/BoxContainer/StartButton").text = text
 
-func preload_map(id):
-	var map = Maps.load("res://maps/%s.tscn" % [id], 0)
+func preload_map(id, reloading = false):
+	var map_path = "res://maps/dg_%02d.tscn" % (id + 1)
+	var map = Maps.load(map_path, 0)
 	var map_offset = 0
 	
 	if map:
-		if len(maps_loaded) >= 1:
-			var prev_map = maps_loaded[len(maps_loaded) - 1]
-			var let = Utils.get_node_by_name(prev_map, "LevelEndBrush")
+		if !reloading:
+			var index = max(len(maps_loaded), 0)
+			maps_loaded.insert(index, map)
+			var lst = Utils.get_node_by_name(map, "LevelEndBrush")
+			map_start_positions.insert(index, lst.position.z)
+		else:
+			maps_loaded[current_map_index] = map
 			
-			map_offset += let.position.z + prev_map.position.z
-
+		if !reloading:
+			map_offset = map_start_positions[len(maps_loaded) - 1]
+		else:
+			map_offset = map_start_positions[current_map_index]
+			
 		map.position.z -= (map_offset / -1) + 40
-	
-		maps_loaded.append(map)
-		
-		var lst = Utils.get_node_by_name(map, "LevelStartBrush")
-		map_start_positions.append(map.get_node("RoadLevel").position.z)
+	else:
+		print("Failed to preload map at '%s'." % [map_path])
 	
 func goto_map(index):
 	if index >= len(maps_loaded):
@@ -140,8 +145,42 @@ func goto_map(index):
 	if car.autopilot:
 		NavMeshes.play(map_loaded.scene_file_path.split("res://maps/")[1].replace(".tscn", ""))
 	
+func reload_map():
+	var map_loaded = maps_loaded[current_map_index]
+	
+	map_loaded.queue_free()
+	
+	preload_map(current_map_index, true)
+	goto_map(current_map_index)
+	
 func load_maps():
 	for i in range(0, 2):
-		preload_map("dg_%02d" % (i + 1))
+		preload_map(i)
 		
 	goto_map(0)
+	
+func _input(ev):
+	if Input.is_action_just_pressed("toggle_fullscreen"):
+		Globals.fullscreen = !Globals.fullscreen
+		init_resolution()
+
+func init_resolution():
+	var primary_screen = DisplayServer.window_get_current_screen()
+	var screen = DisplayServer.screen_get_size(primary_screen)
+	
+	var width = screen.x
+	var height = screen.y
+	
+	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, Globals.fullscreen)
+	
+	if Globals.fullscreen:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	else:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		
+		width = round(width / 2)
+		height = round(height / 2)
+
+	print("Resolution: %dx%d" % [width, height])
+
+	DisplayServer.window_set_size(Vector2(width, height))

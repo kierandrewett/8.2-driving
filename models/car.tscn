@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://c0c5q73ewqyj0" path="res://textures/car_wheel.png" id="2_kmcff"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ka3xn"]
-size = Vector3(0.581, 1.25, 1)
+size = Vector3(0.6, 1, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ou2h0"]
 albedo_texture = ExtResource("2_kmcff")
@@ -303,6 +303,8 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_ydjjo")
 
 [node name="Car" type="CharacterBody3D"]
+slide_on_ceiling = false
+wall_min_slide_angle = 0.0
 script = ExtResource("2_f1o5c")
 
 [node name="Camera" type="Camera3D" parent="."]
@@ -310,7 +312,7 @@ transform = Transform3D(1, 0, 0, 0, 0.936697, 0.350142, 0, -0.350142, 0.936697, 
 current = true
 
 [node name="Collision" type="CollisionShape3D" parent="."]
-transform = Transform3D(9.41749e-07, 3, 0, -3, 9.41749e-07, 0, 0, 0, 3, -0.0348741, -0.297201, -0.503427)
+transform = Transform3D(9.41749e-07, 3, 0, -3, 9.41749e-07, 0, 0, 0, 3, -0.035, 0, -0.503)
 shape = SubResource("BoxShape3D_ka3xn")
 
 [node name="Wheels" type="Node3D" parent="."]

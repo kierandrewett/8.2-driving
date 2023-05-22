@@ -278,20 +278,32 @@ vertical = true
 layout_mode = 2
 text = "Video"
 
-[node name="Resolution" type="VBoxContainer" parent="Options/BoxContainer/Menus/Main__Video"]
+[node name="Main__Audio" type="BoxContainer" parent="Options/BoxContainer/Menus"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 16
+vertical = true
+
+[node name="Title" type="Label" parent="Options/BoxContainer/Menus/Main__Audio"]
+layout_mode = 2
+text = "Audio"
+
+[node name="Audio" type="VBoxContainer" parent="Options/BoxContainer/Menus/Main__Audio"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="ResolutionText" type="Button" parent="Options/BoxContainer/Menus/Main__Video/Resolution"]
+[node name="AudioVolume" type="Button" parent="Options/BoxContainer/Menus/Main__Audio/Audio"]
 layout_mode = 2
 theme = ExtResource("5_ncmyp")
 button_mask = 0
-text = "Resolution"
+text = "Volume"
 alignment = 0
 
-[node name="ResolutionsList" type="OptionButton" parent="Options/BoxContainer/Menus/Main__Video/Resolution"]
+[node name="AudioSlider" type="HSlider" parent="Options/BoxContainer/Menus/Main__Audio/Audio"]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
-theme = ExtResource("5_ncmyp")
+min_value = -80.0
+max_value = 0.0
 
 [connection signal="mouse_entered" from="MainMenu/BoxContainer/BoxContainer/StartButton" to="." method="on_button_mouse_entered"]
 [connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/StartButton" to="." method="on_start_game_pressed"]
@@ -306,8 +318,8 @@ theme = ExtResource("5_ncmyp")
 [connection signal="text_submitted" from="Console/ConsoleContainer/ConsoleInput" to="Console" method="on_text_submitted"]
 [connection signal="visibility_changed" from="Options" to="Options" method="on_visibility_changed"]
 [connection signal="button_down" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_down"]
-[connection signal="button_up" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_up"]
 [connection signal="button_up" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_leave"]
+[connection signal="button_up" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_up"]
 [connection signal="mouse_entered" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_enter"]
 [connection signal="mouse_exited" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_leave"]
 [connection signal="mouse_entered" from="Options/BoxContainer/Menus/Main/ControlsButton" to="." method="on_button_mouse_entered"]
@@ -322,6 +334,7 @@ theme = ExtResource("5_ncmyp")
 [connection signal="mouse_entered" from="Options/BoxContainer/Menus/Main/CreditsButton" to="." method="on_button_mouse_entered"]
 [connection signal="pressed" from="Options/BoxContainer/Menus/Main/CreditsButton" to="." method="on_button_mouse_clicked"]
 [connection signal="pressed" from="Options/BoxContainer/Menus/Main/CreditsButton" to="Options" method="on_button_pressed" binds= ["Main__Credits"]]
-[connection signal="button_up" from="Options/BoxContainer/Menus/Main__Video/Resolution/ResolutionText" to="." method="on_button_mouse_clicked"]
-[connection signal="mouse_entered" from="Options/BoxContainer/Menus/Main__Video/Resolution/ResolutionText" to="." method="on_button_mouse_entered"]
-[connection signal="pressed" from="Options/BoxContainer/Menus/Main__Video/Resolution/ResolutionText" to="Options" method="on_button_pressed"]
+[connection signal="button_up" from="Options/BoxContainer/Menus/Main__Audio/Audio/AudioVolume" to="." method="on_button_mouse_clicked"]
+[connection signal="mouse_entered" from="Options/BoxContainer/Menus/Main__Audio/Audio/AudioVolume" to="." method="on_button_mouse_entered"]
+[connection signal="pressed" from="Options/BoxContainer/Menus/Main__Audio/Audio/AudioVolume" to="Options" method="on_button_pressed"]
+[connection signal="value_changed" from="Options/BoxContainer/Menus/Main__Audio/Audio/AudioSlider" to="Options" method="on_volume_changed"]

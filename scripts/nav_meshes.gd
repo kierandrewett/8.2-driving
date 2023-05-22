@@ -18,6 +18,8 @@ func play(name):
 	
 	var path = "res://maps/nav_meshes/%s.json" % [name]
 	
+	print("Loading nav mesh at '%s'..." % path)
+	
 	var file_buff = FileAccess.open(path, FileAccess.READ)
 	var data = file_buff.get_as_text()
 	var json = JSON.parse_string(data)
@@ -64,10 +66,8 @@ func act(tick):
 	
 	if previous_point:
 		if previous_point.lane != point.lane:
-			print("Moving lanes")
 			car.move_to_lane(point.lane)
 		elif !car.is_moving_lanes:
-			print("moving z")
 			create_tween().tween_property(car, "global_position:x", point.x, 0.1)
 			create_tween().tween_property(car, "global_position:z", point.z, 0.1)
 	

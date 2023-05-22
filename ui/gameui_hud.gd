@@ -56,7 +56,6 @@ func _process(delta):
 	
 	var movement_points = floor(car.position.z / -490 * (min(car.velocity.length_squared(), 5) / 5))
 	
-	print(movement_points)
 	if movement_points >= 1:
 		new_points = movement_points
 	

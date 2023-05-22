@@ -6,6 +6,7 @@ var current_menu_name = ""
 func _ready():
 	hide_all_menus()
 	on_back_button_mouse_leave()
+	set_initial_volume()
 
 func hide_all_menus():
 	for m in GameUI.get_node("Options/BoxContainer/Menus").get_children():
@@ -15,6 +16,7 @@ func hide_all_menus():
 func on_visibility_changed():
 	if self.visible:
 		on_button_pressed("Main")
+		set_initial_volume()
 	else:
 		hide_all_menus()
 
@@ -62,11 +64,9 @@ func on_button_pressed(menu):
 	else:
 		back_btn.text = Array(menu.split("__"))[-2].replace("Main", "Options")
 
-func init_resolutions():
-	var resolution_4_3 = [320, 200]
-	var resolution_16_9 = [480, 234]
+func set_initial_volume():
+	var slider: HSlider = GameUI.get_node("Options/BoxContainer/Menus/Main__Audio/Audio/AudioSlider")
+	slider.value = AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master"))
 	
-	
-	
-	var resolutions_list = GameUI.get_node("Options/BoxContainer/Menus/Main__Video/Resolution/ResolutionsList")
-	
+func on_volume_changed(value):
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), value)

@@ -30,7 +30,7 @@ var done_cam_x_reset = false
 
 var has_render_roads_called_frame = false
 
-var road_index = 0
+var road_index = -1
 var road_pieces = []
 var road_pieces_for_removal = []
 
@@ -190,7 +190,7 @@ func move_to_lane(id):
 		create_tween().tween_property(camera, "rotation:z", 0, 0.5)
 		return
 		
-	if velocity.length() <= 0:
+	if velocity.length() < 2:
 		return
 		
 	indicator = true
@@ -233,7 +233,7 @@ func play_engine_braking(type = "short"):
 	if sound_braking_playing == false:
 		sound_braking_playing = true
 	
-		Sounds.play_sound("res://sounds/engine_%s.wav" % ["brake_short" if type == "short" else "brake_long"], get_tree().root, Globals.volume, randf_range(0.75, 1), "engine_brake").finished.connect(func ():
+		Sounds.play_sound("res://sounds/engine_%s.wav" % ["brake_short" if type == "short" else "brake_long"], get_tree().root, randf_range(0.75, 1), "engine_brake").finished.connect(func ():
 			sound_braking_playing = false
 		)
 
@@ -262,8 +262,10 @@ func on_end_game(ending):
 		
 	Engine.time_scale = 1.0
 	
-	GameUI.visible = true
-	GameUI.get_node("Gradient").modulate.a = 0.75
+	get_tree().create_timer(1.0).timeout.connect(func ():
+		GameUI.visible = true
+		GameUI.get_node("Gradient").modulate.a = 0.75
+	)
 
 func _process(delta):
 	# start reset vars
@@ -287,7 +289,9 @@ func _process(delta):
 func _physics_process(delta):
 	var collision = get_slide_collision(get_slide_collision_count() - 1) if get_slide_collision_count() else null
 	
-	if collision and GameUI.map_loaded.get_node("RoadLevel") and Utils.is_recursive_ancestor_of(collision.get_collider(), GameUI.map_loaded.get_node("RoadLevel")):
+	velocity.y = 0
+	
+	if collision:
 		if !crashed and !collisions.has(collision.get_collider_rid()):
 			collisions.append(collision.get_collider_rid())
 			print("Crashed")
@@ -331,7 +335,7 @@ func _physics_process(delta):
 		var deceleration_modifier = 4000.0
 
 		for wheel in get_node("Wheels").get_children():
-			wheel.rotation.y += 0.4
+			wheel.rotation.y -= floor(velocity.length()) / 100
 
 		if !GameUI.visible and current_state != "complete":
 			var input_dir = Input.get_vector("moveleft", "moveright", "none", "none")
@@ -346,7 +350,6 @@ func _physics_process(delta):
 			
 			# Lower modifier = less time to brake 
 			if Input.is_action_pressed("brake"):
-				print("br", min(velocity.length(), 1))
 				deceleration_modifier = TERMINAL_VELOCITY - velocity.length() / 2
 				MIN_DRIVING_VELOCITY = 0
 			elif Input.is_action_just_released("brake"):
@@ -374,7 +377,6 @@ func _physics_process(delta):
 				fade_out_accel(movement_amount)
 				
 			if !Input.is_action_just_pressed("brake") and !Input.is_action_just_pressed("accelerate") and velocity.length() < 10 and !post_brake_accel_block and MIN_DRIVING_VELOCITY != 10:
-				print("adding ", max(ACCELERATION * (min(velocity.length(), 3) / 40.0), 0.1), " ", min(velocity.length(), 4))
 				var a = max(ACCELERATION * (min(velocity.length(), 3) / 40.0), 0.1)
 				
 				if velocity.length() > 8:
@@ -404,8 +406,8 @@ func _physics_process(delta):
 				fov_tween.kill()
 				fov_tween = create_tween()
 			
-			fov_tween.tween_property(camera, "fov", clamp(velocity.length() * 4 - ((1 - deceleration_amount) * 10), 50, 120), 1)
-			create_tween().tween_property(camera, "position:y", clamp(velocity.length() / 20, 3, 20), 1)
+			fov_tween.tween_property(camera, "fov", clamp(velocity.length() * 4 - ((1 - deceleration_amount) * 10), 60, 120), 1)
+			create_tween().tween_property(camera, "position:y", clamp(velocity.length() / 20, 3.5, 20), 1)
 			
 			if current_state != "complete":
 				create_tween().tween_property(camera, "position:z", clamp(velocity.length() / 20, 3, 5), 0.25).set_trans(Tween.TRANS_SINE)

@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://dc7337iwj7fcs"]
+[gd_scene load_steps=8 format=3 uid="uid://dc7337iwj7fcs"]
 
 [ext_resource type="Script" path="res://maps/dg_01.gd" id="1_lc13s"]
 [ext_resource type="PackedScene" uid="uid://nns75451j2y4" path="res://nodes/LevelEndBrush.tscn" id="2_n3gd8"]
 [ext_resource type="PackedScene" uid="uid://cvub0cayd0qhv" path="res://models/traffic_light.tscn" id="3_11rb8"]
 [ext_resource type="PackedScene" uid="uid://bqu3t3qvbbm3n" path="res://models/road.tscn" id="3_26fgq"]
+[ext_resource type="PackedScene" uid="uid://cu5340max5ala" path="res://props/wooden_crate.tscn" id="5_t3qxm"]
 [ext_resource type="PackedScene" uid="uid://qdxxlu3kmagh" path="res://nodes/LevelStartBrush.tscn" id="6_pyngr"]
+[ext_resource type="Script" path="res://addons/camera.gd" id="7_sy8ha"]
 
 [node name="Level" type="Node3D"]
 script = ExtResource("1_lc13s")
@@ -12,20 +14,52 @@ script = ExtResource("1_lc13s")
 [node name="Road" parent="." instance=ExtResource("3_26fgq")]
 
 [node name="RoadLevel" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.65237, 0, -14.434)
-
-[node name="Box1" type="CSGBox3D" parent="RoadLevel"]
-use_collision = true
-
-[node name="Box2" type="CSGBox3D" parent="RoadLevel"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.90236, 0, -8.19378)
-use_collision = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.65237, 0, -9.56173)
 
 [node name="LevelStartBrush" parent="RoadLevel" instance=ExtResource("6_pyngr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.65237, 0, 9.56705)
 
 [node name="LevelEndBrush" parent="RoadLevel" instance=ExtResource("2_n3gd8")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.125, 0, -74.0149)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.125, 0, -113.611)
+
+[node name="wooden_crate3" parent="RoadLevel" instance=ExtResource("5_t3qxm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000171661, 0.540143, 8.3057)
+
+[node name="wooden_crate4" parent="RoadLevel" instance=ExtResource("5_t3qxm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000171661, 0.540143, -42.4567)
+
+[node name="wooden_crate5" parent="RoadLevel" instance=ExtResource("5_t3qxm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000171661, 0.540143, -45.1817)
+
+[node name="wooden_crate6" parent="RoadLevel" instance=ExtResource("5_t3qxm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000171661, 0.540143, -48.0369)
+
+[node name="wooden_crate7" parent="RoadLevel" instance=ExtResource("5_t3qxm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000171661, 0.540143, -50.7719)
+
+[node name="wooden_crate8" parent="RoadLevel" instance=ExtResource("5_t3qxm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000171661, 0.540143, -53.4147)
+
+[node name="wooden_crate9" parent="RoadLevel" instance=ExtResource("5_t3qxm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000171661, 0.540143, -55.9799)
+
+[node name="wooden_crate10" parent="RoadLevel" instance=ExtResource("5_t3qxm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000171661, 0.540143, -58.6326)
+
+[node name="wooden_crate11" parent="RoadLevel" instance=ExtResource("5_t3qxm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000171661, 0.540143, -61.2162)
+
+[node name="wooden_crate12" parent="RoadLevel" instance=ExtResource("5_t3qxm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000171661, 0.540143, -63.8505)
+
+[node name="wooden_crate2" parent="RoadLevel" instance=ExtResource("5_t3qxm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.37781, 0.519994, -6.09112)
+
+[node name="wooden_crate" parent="RoadLevel" instance=ExtResource("5_t3qxm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0217946, 0.5591, -27.1003)
 
 [node name="traffic_light" parent="RoadLevel" instance=ExtResource("3_11rb8")]
 transform = Transform3D(-1.31134e-07, 0, 3, 0, 3, 0, -3, 0, -1.31134e-07, -2.80998, -0.750871, -46.4112)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+script = ExtResource("7_sy8ha")

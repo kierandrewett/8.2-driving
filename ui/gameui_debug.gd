@@ -10,6 +10,9 @@ func _process(delta):
 	lines = []
 
 	lines.append("%s fps" % [str(Engine.get_frames_per_second())])
+
+	if GameUI.map_loaded and GameUI.map_loaded.scene_file_path:
+		lines[0] += " on %s" % [GameUI.map_loaded.scene_file_path]
 		
 	var car = get_node("/root/Car")
 		

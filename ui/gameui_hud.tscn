@@ -42,7 +42,6 @@ theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 24
 
 [node name="ProgressContainer" type="AspectRatioContainer" parent="MarginContainer"]
-visible = false
 layout_mode = 2
 stretch_mode = 1
 

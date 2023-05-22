@@ -1,0 +1,16 @@
+[gd_resource type="Environment" load_steps=3 format=3 uid="uid://dlt03aoosdo53"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_c4nlu"]
+sky_top_color = Color(0.384314, 0.454902, 0.54902, 1)
+
+[sub_resource type="Sky" id="Sky_3tbux"]
+sky_material = SubResource("ProceduralSkyMaterial_c4nlu")
+
+[resource]
+background_mode = 2
+background_color = Color(1, 1, 1, 1)
+sky = SubResource("Sky_3tbux")
+volumetric_fog_density = 0.001
+volumetric_fog_emission = Color(1, 1, 1, 1)
+volumetric_fog_emission_energy = 0.01
+volumetric_fog_sky_affect = 0.0

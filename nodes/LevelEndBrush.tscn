@@ -1,12 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://nns75451j2y4"]
+[gd_scene load_steps=4 format=3 uid="uid://nns75451j2y4"]
 
 [ext_resource type="Script" path="res://nodes/LevelEndBrush.gd" id="1_6aild"]
 [ext_resource type="Shape3D" uid="uid://c2glvut76watm" path="res://nodes/LevelEndBrush.tres" id="2_5urms"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_urab8"]
+transparency = 1
+albedo_color = Color(0.0823529, 1, 0, 0.4)
 
 [node name="LevelEndBrush" type="Area3D"]
 script = ExtResource("1_6aild")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = ExtResource("2_5urms")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+size = Vector3(1, 21.3006, 20.9471)
+material = SubResource("StandardMaterial3D_urab8")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
