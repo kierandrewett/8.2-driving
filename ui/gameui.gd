@@ -7,6 +7,7 @@ var maps_loaded = []
 var current_map_index = 0
 var car_loaded = null
 var map_start_positions = []
+var old_bus_volume = 0
 
 func _ready():
 	self.visible = true
@@ -16,12 +17,15 @@ func _ready():
 	
 	get_viewport().connect("size_changed", Callable(self, "on_window_resize"))
 	get_viewport().connect("focus_exited", Callable(self, "on_window_blur"))
+	get_viewport().connect("focus_entered", Callable(self, "on_window_focus"))
 	
 	get_node("Options").visible = false
 	
 	slomo_tween = create_tween()
 	
 	init_resolution()
+	
+	old_bus_volume = AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master"))
 
 func on_window_resize():
 	var size = get_viewport_rect().size
@@ -38,9 +42,15 @@ func on_window_resize():
 		node.set_size(Vector2(node.get_size().x, y))
 
 func on_window_blur():
+	old_bus_volume = AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master"))
+	
 	await get_tree().create_timer(0.1).timeout
 	if visible == false:
+		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), -80)
 		visible = true
+		
+func on_window_focus():
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), old_bus_volume)
 
 func _process(delta):
 	if Input.is_action_just_pressed("open_gameui"):

@@ -11,6 +11,7 @@
 script = ExtResource("1_lc13s")
 
 [node name="Road" parent="." instance=ExtResource("3_26fgq")]
+visible = false
 
 [node name="RoadLevel" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.65237, 0, -9.56173)

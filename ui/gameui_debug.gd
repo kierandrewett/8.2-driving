@@ -7,6 +7,9 @@ func _ready():
 	debug_info = get_node("/root/GameUIDebug/MarginContainer/DebugInformation")
 
 func _process(delta):
+	if !OS.is_debug_build():
+		return
+	
 	lines = []
 
 	lines.append("%s fps" % [str(Engine.get_frames_per_second())])

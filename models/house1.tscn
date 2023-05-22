@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://bpp413k8egp0f"]
+[gd_scene load_steps=35 format=3 uid="uid://bpp413k8egp0f"]
 
 [ext_resource type="Material" uid="uid://sqt2qt2y61lv" path="res://materials/grass.tres" id="1_3nvm6"]
 [ext_resource type="Material" uid="uid://dxyyeofj43v5t" path="res://textures/bricks.tres" id="1_pjlts"]
@@ -284,6 +284,16 @@ shadow_mesh = SubResource("ArrayMesh_7xrty")
 albedo_texture = ExtResource("5_0pw0w")
 uv1_world_triplanar = true
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rj3i7"]
+resource_local_to_scene = true
+transparency = 1
+albedo_color = Color(0, 0.482353, 0.639216, 1)
+metallic = 0.89
+roughness = 0.14
+
+[sub_resource type="BoxMesh" id="BoxMesh_6jiq4"]
+size = Vector3(2, 1.259, 0.01)
+
 [node name="house1" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0125217, 0.0444651, 0.0459366)
 
@@ -349,3 +359,13 @@ skeleton = NodePath("")
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.310134, 1.27791, -1.32215)
 size = Vector3(0.002, 1.36208, 2.47578)
 material = SubResource("StandardMaterial3D_n5r4s")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -6.13959, 1.26962, -2.49943)
+size = Vector3(0.002, 1.36208, 2.47578)
+material = SubResource("StandardMaterial3D_n5r4s")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.406, 1.41643, 0.936574)
+material_override = SubResource("StandardMaterial3D_rj3i7")
+mesh = SubResource("BoxMesh_6jiq4")

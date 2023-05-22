@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://cbck1hos6dv0f"]
+
+[sub_resource type="GDScript" id="GDScript_puyd6"]
+script/source = "@tool
+extends Control
+
+func _ready():
+	pass
+
+func _process(delta):
+	pass
+"
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_puyd6")

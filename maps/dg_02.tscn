@@ -1,13 +1,15 @@
-[gd_scene load_steps=6 format=3 uid="uid://b0gpcayxbyogj"]
+[gd_scene load_steps=5 format=3 uid="uid://b0gpcayxbyogj"]
 
 [ext_resource type="Script" path="res://maps/dg_02.gd" id="1_orgwb"]
 [ext_resource type="PackedScene" uid="uid://nns75451j2y4" path="res://nodes/LevelEndBrush.tscn" id="2_mduxq"]
-[ext_resource type="PackedScene" uid="uid://cvub0cayd0qhv" path="res://models/traffic_light.tscn" id="3_0ysq8"]
-[ext_resource type="PackedScene" uid="uid://bqu3t3qvbbm3n" path="res://models/road.tscn" id="4_d6uc5"]
+[ext_resource type="PackedScene" uid="uid://bqu3t3qvbbm3n" path="res://models/road.tscn" id="2_qm0pi"]
 [ext_resource type="PackedScene" uid="uid://qdxxlu3kmagh" path="res://nodes/LevelStartBrush.tscn" id="6_0btku"]
 
 [node name="Level" type="Node3D"]
 script = ExtResource("1_orgwb")
+
+[node name="Road" parent="." instance=ExtResource("2_qm0pi")]
+visible = false
 
 [node name="RoadLevel" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.65237, 0, -9.56705)
@@ -20,17 +22,8 @@ use_collision = true
 transform = Transform3D(-0.986802, 0, -0.161931, 0, 1, 0, 0.161931, 0, -0.986802, 0.689165, 1.15735, -9.40575)
 use_collision = true
 
-[node name="CSGBox3D" type="CSGBox3D" parent="RoadLevel"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -3.36744, 1.96102, 9.10105)
-size = Vector3(0.322315, 4.38184, 1)
-
 [node name="LevelEndBrush" parent="RoadLevel" instance=ExtResource("2_mduxq")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.125, 0, -74.0149)
 
 [node name="LevelStartBrush" parent="RoadLevel" instance=ExtResource("6_0btku")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.65237, 0, 9.56705)
-
-[node name="traffic_light" parent="RoadLevel" instance=ExtResource("3_0ysq8")]
-transform = Transform3D(-1.31134e-07, 0, 3, 0, 3, 0, -3, 0, -1.31134e-07, 1.63561, -0.750871, -46.4112)
-
-[node name="Road" parent="." instance=ExtResource("4_d6uc5")]
