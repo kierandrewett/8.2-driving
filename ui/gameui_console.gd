@@ -117,6 +117,15 @@ func execute_command(cmd):
 		else:
 			Maps.load("res://ui/gameui_nav_mesh_recorder.tscn")
 		
+	if command == "host_timescale":
+		if args.size() < 1:
+			self.log("Usage:\n    host_timescale <timescale>")
+			return
+		
+		var ts = args[0]
+		
+		Engine.time_scale = float(ts)
+		
 	if command in Globals and Globals[command] != null:
 		if args.size() == 0:
 			self.log("\"%s\" = \"%s\"" % [command, Globals[command]])

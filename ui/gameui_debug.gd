@@ -31,10 +31,10 @@ func _process(delta):
 		
 		lines.append("")
 		
-		var filtered_roads = car.road_pieces.filter(func(piece): return piece != null)
+		var filtered_roads = GameUI.road_pieces.filter(func(piece): return piece != null)
 		
 		lines.append("roads: %s" % [len(filtered_roads)])
-		lines.append("curr_road: %s" % ["0"])
+		lines.append("curr_road: %s" % [GameUI.road_car_is_on])
 		
 		lines.append("")
 		

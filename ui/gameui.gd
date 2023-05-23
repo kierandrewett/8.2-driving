@@ -9,6 +9,16 @@ var car_loaded = null
 var map_start_positions = []
 var old_bus_volume = 0
 
+var game_ended = false
+
+var gibs = []
+
+var road_index = 0
+var road_pieces = []
+var road_car_is_on = 0
+
+var traffic_lights_process_timer: Timer = null
+
 func _ready():
 	self.visible = true
 
@@ -27,6 +37,30 @@ func _ready():
 	
 	old_bus_volume = AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master"))
 
+func render_new_road(on_record = true):	
+	var road_chunk = Maps.load("res://models/road.tscn")
+	var car_shape = car_loaded.get_node("Collision").shape.size
+
+	road_chunk.get_node("RoadContainer").position.y -= car_shape.x * 2
+	road_chunk.get_node("RoadContainer").position.x += car_shape.z * 2
+	road_chunk.get_node("RoadContainer").position.z -= road_chunk.get_node("RoadContainer/RoadSurface").size.z * road_index
+		
+	var bounds: Area3D = road_chunk.get_node("RoadContainer/AreaBounds")
+	bounds.body_exited.connect(func (body):
+		if body.name == self.name:
+			render_new_road()
+			road_car_is_on = road_car_is_on + 1
+	)
+		
+	if on_record:
+		road_pieces.append(road_chunk)
+		road_index = road_index + 1
+
+func render_roads():
+	# Prerender 5 roads for us
+	for i in range(1, Globals.r_road_frequency):
+		render_new_road()
+
 func on_window_resize():
 	var size = get_viewport_rect().size
 	var x = size.x
@@ -44,12 +78,14 @@ func on_window_resize():
 func on_window_blur():
 	old_bus_volume = AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master"))
 	
-	await get_tree().create_timer(0.1).timeout
 	if visible == false:
-		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), -80)
-		visible = true
+		await get_tree().create_timer(0.1).timeout
+		if visible == false:
+			AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), -80)
+			visible = true
 		
 func on_window_focus():
+	print(old_bus_volume)
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), old_bus_volume)
 
 func _process(delta):
@@ -64,7 +100,10 @@ func _process(delta):
 	if get_node_or_null("/root/Car") and !get_node_or_null("/root/Car").autopilot and get_node_or_null("/root/Car").current_state != "complete":
 		Sounds.set_paused_sounds(GameUI.visible, ["master", "crash"])
 
-	get_node("MainMenu/BoxContainer/BoxContainer/RestartButton").visible = len(maps_loaded) >= 1
+	var car = get_node("/root/Car")
+
+	get_node("MainMenu/BoxContainer/BoxContainer/RestartButton").visible = len(maps_loaded) >= 1 and (!car.crashed or game_ended)
+	get_node("MainMenu/BoxContainer/BoxContainer/StartButton").visible = !game_ended
 
 	pass
 	
@@ -75,6 +114,7 @@ func on_start_game_pressed(restart = false):
 		return
 	
 	self.visible = false
+	GameUI.game_ended = false
 	GameUI.get_node("Gradient").modulate.a = 1
 	
 	if car.autopilot:
@@ -101,17 +141,22 @@ func on_start_game_pressed(restart = false):
 			car.reset()
 			
 		car.reset()
+		
+		road_index = 0
+		
+		for road in road_pieces:
+			if road != null:
+				if get_tree().root.has_node(road.get_path()):
+					road.queue_free()
+					
+		render_roads()
+
 
 func on_restart_game_pressed():
-	var node = get_node("MainMenu/BoxContainer/BoxContainer/RestartButton")
-	if node.text.ends_with("Restart Game?"):
-		on_start_game_pressed(true)
-	else:
-		node.text = node.text + "?"
-		
-	get_tree().create_timer(2).timeout.connect(func ():
-		node.text = "Restart Game"
-	)
+	GameUI.goto_map(0, false)
+	on_start_game_pressed(true)
+	await get_tree().process_frame
+	on_start_game_pressed(true)
 
 func on_options_pressed():
 	get_node("MainMenu").visible = !get_node("MainMenu").visible
@@ -133,10 +178,11 @@ func on_game_completed():
 	var car = get_node("/root/Car")
 	visible = true
 	car.autopilot = true
-
-	get_tree().create_timer(1).timeout.connect(func ():
-		set_button_text("You did it!")
-	)
+	car.crashed = true
+	game_ended = true
+	car.velocity = Vector3.ZERO
+	car.reset()
+	get_node("MainMenu/BoxContainer/BoxContainer/StartButton").visible = false
 
 func preload_map(id, reloading = false, map_index = -1):
 	var map_path = "res://maps/dg_%02d.tscn" % (id + 1)
@@ -178,7 +224,9 @@ func goto_map(index, teleport = true):
 	current_map_index = index
 	
 	if car and teleport:
-		car.global_position.z = map_start_positions[current_map_index]
+		var z = map_start_positions[current_map_index]
+		
+		car.global_position.z = z
 	
 	if car.autopilot:
 		NavMeshes.play(map_loaded.scene_file_path.split("res://maps/")[1].replace(".tscn", ""))
@@ -225,3 +273,6 @@ func init_resolution():
 	print("Resolution: %dx%d" % [width, height])
 
 	DisplayServer.window_set_size(Vector2(width, height))
+
+func push_gib(node):
+	gibs.append(gibs)

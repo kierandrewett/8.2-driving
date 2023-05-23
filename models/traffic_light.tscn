@@ -541,7 +541,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_ypb3i")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5o3ke"]
-albedo_color = Color(1, 0.847059, 0.105882, 1)
+albedo_color = Color(0.231373, 0.239216, 0.223529, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pwy55"]
 
@@ -576,7 +576,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_fkjfn")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jp7um"]
-albedo_color = Color(0.960784, 0.152941, 0.152941, 1)
+albedo_color = Color(0.231373, 0.239216, 0.223529, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iqhai"]
 
@@ -611,7 +611,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_l0ysr")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_04ur2"]
-albedo_color = Color(0.403922, 1, 0.294118, 1)
+albedo_color = Color(0.231373, 0.239216, 0.223529, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fa4eg"]
 
@@ -652,6 +652,30 @@ transform = Transform3D(0.280452, 0, 0, 0, 1.07881, 0, 0, 0, 0.280452, 0, 1, 0)
 material_override = SubResource("StandardMaterial3D_ouls3")
 mesh = SubResource("ArrayMesh_a8gvd")
 skeleton = NodePath("")
+
+[node name="RedLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -1, -8.74229e-08, 0, 8.74229e-08, -1, -0.296431, 1.76211, -0.000475802)
+light_color = Color(1, 0, 0, 1)
+light_energy = 0.0
+distance_fade_enabled = true
+distance_fade_begin = 100.0
+omni_range = 0.601456
+
+[node name="AmberLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -1, -8.74229e-08, 0, 8.74229e-08, -1, -0.296, 1.61678, -0.000475802)
+light_color = Color(1, 0.396078, 0, 1)
+light_energy = 0.0
+distance_fade_enabled = true
+distance_fade_begin = 100.0
+omni_range = 0.601456
+
+[node name="GreenLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -1, -8.74229e-08, 0, 8.74229e-08, -1, -0.296, 1.47941, -0.000475802)
+light_color = Color(0, 0.815686, 0, 1)
+light_energy = 0.0
+distance_fade_enabled = true
+distance_fade_begin = 100.0
+omni_range = 0.601456
 
 [node name="Cube" type="MeshInstance3D" parent="."]
 transform = Transform3D(1.56241, 0, 0, 0, -0.30403, -8.74228e-08, 0, 2.65792e-08, -1, -0.0755121, 1.87429, -0.000475802)

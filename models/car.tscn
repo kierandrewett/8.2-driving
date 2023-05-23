@@ -1,8 +1,12 @@
-[gd_scene load_steps=26 format=3 uid="uid://bshxyxetsko0s"]
+[gd_scene load_steps=37 format=3 uid="uid://bshxyxetsko0s"]
 
 [ext_resource type="Texture2D" uid="uid://cj0a8c4jhpd80" path="res://textures/car.png" id="1_ihkxv"]
 [ext_resource type="Script" path="res://models/car.gd" id="2_f1o5c"]
 [ext_resource type="Texture2D" uid="uid://c0c5q73ewqyj0" path="res://textures/car_wheel.png" id="2_kmcff"]
+[ext_resource type="Script" path="res://models/car-lights.gd" id="3_w1t0m"]
+[ext_resource type="Texture2D" uid="uid://cpomeocy8hg4l" path="res://particles/fire.png" id="4_3y7u7"]
+[ext_resource type="Gradient" uid="uid://ck4c1w1v4tv8x" path="res://textures/fire.tres" id="4_olvxr"]
+[ext_resource type="Script" path="res://models/car-fire.gd" id="7_nfyqv"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ka3xn"]
 size = Vector3(0.6, 1, 1)
@@ -302,6 +306,53 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_ydjjo")
 
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ab8qx"]
+gradient = ExtResource("4_olvxr")
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_n6sev"]
+gradient = ExtResource("4_olvxr")
+
+[sub_resource type="Curve" id="Curve_xwcu4"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.158576, 0.990909), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_4eiyj"]
+curve = SubResource("Curve_xwcu4")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jfvts"]
+emission_shape = 1
+emission_sphere_radius = 0.05
+direction = Vector3(0, 1, 0.5)
+spread = 30.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 0.1
+initial_velocity_max = 5.0
+angular_velocity_min = 1.0
+angular_velocity_max = 40.0
+linear_accel_min = 1.0
+linear_accel_max = 4.0
+radial_accel_min = 1.0
+radial_accel_max = 2.0
+scale_min = 0.8
+scale_curve = SubResource("CurveTexture_4eiyj")
+color_ramp = SubResource("GradientTexture1D_n6sev")
+color_initial_ramp = SubResource("GradientTexture1D_ab8qx")
+hue_variation_min = -0.01
+hue_variation_max = -0.01
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_msl52"]
+blend_mode = 1
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("4_3y7u7")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 6
+particles_anim_v_frames = 5
+particles_anim_loop = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_02dv8"]
+material = SubResource("StandardMaterial3D_msl52")
+
 [node name="Car" type="CharacterBody3D"]
 slide_on_ceiling = false
 wall_min_slide_angle = 0.0
@@ -341,8 +392,36 @@ material_override = SubResource("StandardMaterial3D_7u8kc")
 mesh = SubResource("ArrayMesh_borvu")
 skeleton = NodePath("")
 
+[node name="RearLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.669175, -0.616988, 1.04065)
+light_color = Color(1, 0.317647, 0, 1)
+light_energy = 1.5
+light_size = 1.0
+omni_range = 2.0
+script = ExtResource("3_w1t0m")
+
+[node name="RearLight2" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.679911, -0.616988, 1.04065)
+light_color = Color(1, 0.317647, 0, 1)
+light_energy = 1.5
+light_size = 1.0
+omni_range = 2.0
+script = ExtResource("3_w1t0m")
+
 [node name="CarModel" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.358612, 0)
 material_override = SubResource("StandardMaterial3D_g8suv")
 mesh = SubResource("ArrayMesh_em436")
 skeleton = NodePath("")
+
+[node name="FireParticle" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.100543, -1.64667)
+emitting = false
+amount = 1
+lifetime = 0.5
+randomness = 1.0
+visibility_aabb = AABB(-4, -3.36096, -4, 8, 8, 8)
+draw_order = 3
+process_material = SubResource("ParticleProcessMaterial_jfvts")
+draw_pass_1 = SubResource("QuadMesh_02dv8")
+script = ExtResource("7_nfyqv")

@@ -16,8 +16,6 @@ func destroy(car: CharacterBody3D = null):
 				impulse.x += car.velocity.x
 				impulse.z -= car.velocity.z
 			
-			print(impulse)
-			
 			node.apply_impulse(impulse)
 			get_tree().create_timer(2).timeout.connect(func ():
 				if car:
@@ -28,6 +26,8 @@ func destroy(car: CharacterBody3D = null):
 			)
 		
 		visible = false
+		car.add_vehicle_damage()
+		
 		await get_tree().create_timer(0.01).timeout
 		Sounds.play_sound("res://sounds/collisions/wood%d.wav" % [round(randf_range(1, 3))], get_tree().root, Globals.volume, randf_range(0.8, 1.1), "crash")
 

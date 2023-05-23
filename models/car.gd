@@ -23,6 +23,12 @@ var is_moving_lanes = false
 var current_state = ""
 
 @onready var camera: Camera3D = $Camera
+@onready var fire_particle: GPUParticles3D = $FireParticle
+
+@onready var rear_light_l: OmniLight3D = $RearLight
+@onready var rear_light_r: OmniLight3D = $RearLight2
+
+var points = 0
 
 var road: Node = null
 
@@ -68,13 +74,13 @@ var post_brake_accel_block = false
 
 var collisions = []
 
+var last_known_velocity = Vector3.ZERO
+
 func reset_camera_init():
 	camera.position.x -= 1
 
 func _ready():
-	# Prerender 5 roads for us
-	for i in range(1, ROAD_LOAD_FREQUENCY):
-		render_new_road()
+	GameUI.render_roads()
 	
 	if GameUI.visible:
 		reset_camera_init()
@@ -102,6 +108,9 @@ func init_sounds():
 	Sounds.play_sound("res://sounds/indicator_tick.wav", get_tree().root, -80, 1, "indicator")
 
 func reset():
+	points = 0
+	get_node("/root/GameUIHud").set_points(0, 0)
+	
 	crashed_z = 0
 	crashed_x = 0
 	
@@ -116,10 +125,20 @@ func reset():
 	
 	Engine.time_scale = 1.0
 	
+	if GameUI.traffic_lights_process_timer != null:
+		if get_tree().root.has_node(GameUI.traffic_lights_process_timer.get_path()):
+			GameUI.traffic_lights_process_timer.stop()
+			GameUI.traffic_lights_process_timer = null
+	
 	crashed = false
 	current_state = ""
 	move_and_slide()
 	collisions = []
+	
+	fire_particle.emitting = false
+	fire_particle.amount = 1
+	
+	last_known_velocity = Vector3.ZERO
 	
 	sound_braking_playing = false
 	sound_accelerate_playing = false
@@ -128,33 +147,20 @@ func reset():
 	
 	reset_camera()
 	
+	position.x = 0
+	current_lane = 0
+	
 	Sounds.stop_some_sounds(["engine", "engine_accel", "indicator"])
 	init_sounds()
 	
 	start_position = global_position
 
 	MIN_DRIVING_VELOCITY = 10
+	velocity = Vector3.ZERO
 
 func run_idle_movement():
 	move_to_lane(randi() % 2)
 	get_tree().create_timer(randi() % 10 + 5).timeout.connect(run_idle_movement())
-
-func render_new_road():	
-	var road_chunk = Maps.load("res://models/road.tscn")
-	var car_shape = get_node("Collision").shape.size
-
-	road_chunk.get_node("RoadContainer").position.y -= car_shape.x * 2
-	road_chunk.get_node("RoadContainer").position.x += car_shape.z * 2
-	road_chunk.get_node("RoadContainer").position.z -= road_chunk.get_node("RoadContainer/RoadSurface").size.z * road_index
-		
-	var bounds: Area3D = road_chunk.get_node("RoadContainer/AreaBounds")
-	bounds.body_exited.connect(func (body):
-		if body.name == self.name:
-			render_new_road()
-	)
-		
-	road_pieces.append(road_chunk)
-	road_index = road_index + 1
 	
 func reset_camera():
 	done_cam_x_reset = true
@@ -251,6 +257,10 @@ func fade_out_accel(movement_amount):
 	for sound in Sounds.get_all_sounds_in_sink("engine_accel").values():
 		sound.pitch_scale = clamp(movement_amount / -1 * 10, 0.3, 1)
 
+func add_vehicle_damage(amount_to_add = 5):
+	fire_particle.emitting = true
+	fire_particle.amount = min(fire_particle.amount + amount_to_add, 200)
+
 func on_end_game(ending):
 	if ending == "crash":
 		GameUI.set_button_text("Restart Game")
@@ -300,11 +310,12 @@ func _physics_process(delta):
 		if !crashed and !collisions.has(collision.get_collider_rid()):
 			collisions.append(collision.get_collider_rid())
 			print("Crashed")
+			add_vehicle_damage(last_known_velocity.length())
 			crashed = true
 			on_end_game("crash")
 			play_car_collision()
 			Sounds.stop_some_sounds(["engine", "engine_accel", "indicator"])
-			
+
 		velocity = Vector3.ZERO
 
 		if fov_tween:
@@ -395,6 +406,7 @@ func _physics_process(delta):
 		var movement = max(min(velocity.z - movement_amount, -MIN_DRIVING_VELOCITY), -TERMINAL_VELOCITY)
 		velocity.z = move_toward(movement, 0, DRIVING_VELOCITY)
 
+		last_known_velocity = velocity
 		move_and_slide()
 		
 		if GameUI.visible and autopilot:
@@ -420,5 +432,15 @@ func get_speed_mph():
 func get_speed_kmh():
 	return get_speed_mph() * 1.609344
 			
+func deduct_points(points_to_deduct):
+	Sounds.play_sound("res://sounds/points/point_lost.mp3")
+	points -= points_to_deduct
+	get_node("/root/GameUIHud").set_points(points, -points_to_deduct)
+	
+func add_points(points_to_add):
+	Sounds.play_sound("res://sounds/points/point_gain.mp3")
+	points += points_to_add
+	get_node("/root/GameUIHud").set_points(points, points_to_add)
+	
 func setpos(x, y, z):
 	position = Vector3(x, y, z)

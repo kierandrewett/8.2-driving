@@ -9,7 +9,7 @@ extends Node
 
 @export var cl_lane_change_shake_degree = 0.075
 
-@export var r_road_frequency = 10
+@export var r_road_frequency = 5
 
 @export var volume = 1
 @export var hud_scale = 1

@@ -17,3 +17,6 @@ func _on_body_entered(node):
 				GameUI.on_game_completed()
 			else:
 				GameUI.goto_map(GameUI.current_map_index + 1, false)
+				
+			level_ended = false
+			hit_node = null

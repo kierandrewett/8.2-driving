@@ -14,11 +14,19 @@ func _ready():
 	jiggy_tween = get_tree().create_tween()
 	
 	points.text = "%02d" % points_int
-	points_jig()
+	points_jig(points_int)
 	
 	pass
+	
+func set_points(points_int, amt_changed):
+	var text = "%02d" % amt_changed
+	if amt_changed > 0:
+		text = "+" + text
+	points.text = text
+	
+	points_jig(max(points_int, 0))
 
-func points_jig():		
+func points_jig(amount):		
 	points.pivot_offset = points.size / 2
 		
 	points.rotation = -0.3
@@ -32,7 +40,9 @@ func points_jig():
 	if jiggy_tween:
 		jiggy_tween = get_tree().create_tween()
 	
-	jiggy_tween.tween_property(points, "scale", Vector2.ONE, 0.2).set_trans(Tween.TRANS_SINE)
+	jiggy_tween.tween_property(points, "scale", Vector2.ONE, 0.4).set_trans(Tween.TRANS_SINE).finished.connect(func ():
+		points.text = "%02d" % amount	
+	)
 
 func _process(delta):
 	if !car:
@@ -48,25 +58,6 @@ func _process(delta):
 		return
 	
 	speedometer.text = "%d mph" % [car.get_speed_mph()]
-	
-	if !GameUI.map_loaded:
-		return
-		
-	var new_points = GameUI.current_map_index
-	
-	var movement_points = floor(car.position.z / -490 * (min(car.velocity.length_squared(), 5) / 5))
-	
-	if movement_points >= 1:
-		new_points = movement_points
-	
-	if car.crashed:
-		new_points = 0
-		
-	points_int += new_points
-		
-	if int(points.text) != points_int:
-		points.text = "%02d" % (points_int)
-		points_jig()
 	
 	if GameUI.map_loaded:
 		var level_start = Utils.get_node_by_name(GameUI.maps_loaded[GameUI.current_map_index - 1], "LevelEndBrush")

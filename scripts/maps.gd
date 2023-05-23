@@ -49,4 +49,10 @@ func fixup_map(node = null):
 			if "position" in road and road.name == "RoadLevel" or road.name == "RoadContainer":
 				road.position.y -= car_shape.x * 2
 				road.position.x += car_shape.z * 2
-
+				
+		# This ensures any remains from testing the road when making the map is gone
+		var all_level_children = []
+		Utils.get_all_nodes(node.get_node("Road"), all_level_children)
+		for child in all_level_children:
+			if "disabled" in child:
+				child.disabled = true
