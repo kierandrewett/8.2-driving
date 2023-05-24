@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://dc7337iwj7fcs"]
+[gd_scene load_steps=8 format=3 uid="uid://dc7337iwj7fcs"]
 
 [ext_resource type="Script" path="res://maps/dg_01.gd" id="1_lc13s"]
 [ext_resource type="PackedScene" uid="uid://nns75451j2y4" path="res://nodes/LevelEndBrush.tscn" id="2_n3gd8"]
 [ext_resource type="PackedScene" uid="uid://bqu3t3qvbbm3n" path="res://models/road.tscn" id="3_26fgq"]
+[ext_resource type="PackedScene" uid="uid://cx2mby71j8gc7" path="res://models/people/human01.tscn" id="5_am8lh"]
 [ext_resource type="PackedScene" uid="uid://cu5340max5ala" path="res://props/wooden_crate.tscn" id="5_t3qxm"]
 [ext_resource type="PackedScene" uid="uid://qdxxlu3kmagh" path="res://nodes/LevelStartBrush.tscn" id="6_pyngr"]
 [ext_resource type="Script" path="res://addons/camera.gd" id="7_sy8ha"]
@@ -11,15 +12,19 @@
 script = ExtResource("1_lc13s")
 
 [node name="Road" parent="." instance=ExtResource("3_26fgq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.170118)
+
+[node name="LevelStartBrush" parent="." instance=ExtResource("6_pyngr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.233, -1.722, 0)
+
+[node name="LevelEndBrush" parent="." instance=ExtResource("2_n3gd8")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.473, 0, -124.883)
 
 [node name="RoadLevel" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.65237, 0, -9.56173)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.652, 0, -40.8838)
 
-[node name="LevelStartBrush" parent="RoadLevel" instance=ExtResource("6_pyngr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.65237, 0, 9.56705)
-
-[node name="LevelEndBrush" parent="RoadLevel" instance=ExtResource("2_n3gd8")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.125, 0, -67.2495)
+[node name="human01" parent="RoadLevel" instance=ExtResource("5_am8lh")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -0.000171661, -0.456305, -20.7888)
 
 [node name="wooden_crate3" parent="RoadLevel" instance=ExtResource("5_t3qxm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000171661, 0.540143, 8.3057)
@@ -56,6 +61,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.37781, 0.519994, -6.09112)
 
 [node name="wooden_crate" parent="RoadLevel" instance=ExtResource("5_t3qxm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0217946, 0.5591, -27.1003)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="RoadLevel"]
+transform = Transform3D(1, 0, 0, 0, 0.917755, -0.397148, 0, 0.397148, 0.917755, 4.3537, 0, -56.3834)
+use_collision = true
+size = Vector3(3.51871, 1, 4.63315)
 
 [node name="CSGBox3D" type="CSGBox3D" parent="RoadLevel"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.74726, 0.121752, 7.08124)

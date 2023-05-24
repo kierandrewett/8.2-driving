@@ -36,6 +36,8 @@ func _ready():
 	init_resolution()
 	
 	old_bus_volume = AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master"))
+	
+	get_node("Screen").visible = false
 
 func render_new_road(on_record = true):	
 	var road_chunk = Maps.load("res://models/road.tscn")
@@ -47,6 +49,8 @@ func render_new_road(on_record = true):
 		
 	var bounds: Area3D = road_chunk.get_node("RoadContainer/AreaBounds")
 	bounds.body_exited.connect(func (body):
+		print(body)
+		
 		if body.name == self.name:
 			render_new_road()
 			road_car_is_on = road_car_is_on + 1
@@ -113,14 +117,14 @@ func on_start_game_pressed(restart = false):
 	if !car:
 		return
 	
-	self.visible = false
 	GameUI.game_ended = false
 	GameUI.get_node("Gradient").modulate.a = 1
 	
-	if car.autopilot:
+	if car.autopilot and GameUI.map_loaded:
 		GameUI.map_loaded.queue_free()
 		GameUI.map_loaded = null
 		GameUI.load_maps()
+		car.reset()
 	
 	car.autopilot = false
 	NavMeshes.stop()
@@ -144,19 +148,21 @@ func on_start_game_pressed(restart = false):
 		
 		road_index = 0
 		
-		for road in road_pieces:
-			if road != null:
-				if get_tree().root.has_node(road.get_path()):
-					road.queue_free()
-					
-		render_roads()
-
+	self.visible = false
 
 func on_restart_game_pressed():
-	GameUI.goto_map(0, false)
+	get_node("Screen").visible = true
+	GameUI.map_loaded = null
+	get_node("/root/Car").reset()
+	
+	for map in maps_loaded:
+		if map != null:
+			map.queue_free()
+			
+	for i in range(0, 20):
+		await get_tree().process_frame
 	on_start_game_pressed(true)
-	await get_tree().process_frame
-	on_start_game_pressed(true)
+	get_node("Screen").visible = false
 
 func on_options_pressed():
 	get_node("MainMenu").visible = !get_node("MainMenu").visible
@@ -181,7 +187,6 @@ func on_game_completed():
 	car.crashed = true
 	game_ended = true
 	car.velocity = Vector3.ZERO
-	car.reset()
 	get_node("MainMenu/BoxContainer/BoxContainer/StartButton").visible = false
 
 func preload_map(id, reloading = false, map_index = -1):
@@ -196,19 +201,20 @@ func preload_map(id, reloading = false, map_index = -1):
 			
 			if index <= 0:
 				var lst = Utils.get_node_by_name(map, "LevelStartBrush")
+				print(lst.position.z)
 				map_start_positions.insert(index, lst.position.z)
 			else:
 				var lst = Utils.get_node_by_name(maps_loaded[index - 1], "LevelEndBrush")
 				map_start_positions.insert(index, -(map_start_positions[index - 1] - lst.position.z))
 		else:
-			maps_loaded[map_index if reloading and map_index >= 0 else current_map_index] = map
+			maps_loaded.insert(map_index if reloading and map_index >= 0 else current_map_index, map)
 			
 		if !reloading:
 			map_offset = map_start_positions[len(maps_loaded) - 1]
 		else:
 			map_offset = map_start_positions[map_index if reloading and map_index >= 0 else current_map_index]
 			
-		map.position.z -= (map_offset / -1) + 40
+		map.position.z += map_offset
 	else:
 		print("Failed to preload map at '%s'." % [map_path])
 	
@@ -243,8 +249,7 @@ func load_maps(reloading = false):
 	if car:
 		car.position.z = 0
 	
-	for i in range(0, 2):
-		preload_map(i, reloading, i)
+	preload_map(0, reloading, 0)
 		
 	goto_map(0)
 	
@@ -260,19 +265,20 @@ func init_resolution():
 	var width = screen.x
 	var height = screen.y
 	
-	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, Globals.fullscreen)
+	if OS.get_name() != "macOS":
+		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, Globals.fullscreen)
 	
-	if Globals.fullscreen:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
-	else:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-		
-		width = round(width / 2)
-		height = round(height / 2)
+		if Globals.fullscreen:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+		else:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+			
+			width = round(width / 2)
+			height = round(height / 2)
 
-	print("Resolution: %dx%d" % [width, height])
+		print("Resolution: %dx%d" % [width, height])
 
-	DisplayServer.window_set_size(Vector2(width, height))
+		DisplayServer.window_set_size(Vector2(width, height))
 
 func push_gib(node):
 	gibs.append(gibs)

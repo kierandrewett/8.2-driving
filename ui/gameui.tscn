@@ -1,10 +1,11 @@
-[gd_scene load_steps=17 format=3 uid="uid://bouxkwjcpvs4a"]
+[gd_scene load_steps=18 format=3 uid="uid://bouxkwjcpvs4a"]
 
 [ext_resource type="Script" path="res://ui/gameui.gd" id="1_5brjb"]
 [ext_resource type="Script" path="res://ui/gameui_console.gd" id="2_yb7b5"]
 [ext_resource type="Script" path="res://ui/gameui_options.gd" id="3_yj7i2"]
 [ext_resource type="Texture2D" uid="uid://buxkgo2ucrw04" path="res://textures/icons/arrow_back.png" id="4_cd3is"]
 [ext_resource type="Theme" uid="uid://j50owx3xj2xu" path="res://ui/gameui.tres" id="5_ncmyp"]
+[ext_resource type="Script" path="res://ui/gameui_options_video.gd" id="6_s0rbu"]
 
 [sub_resource type="Gradient" id="Gradient_m6yfn"]
 interpolation_mode = 2
@@ -42,6 +43,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_5brjb")
+
+[node name="Screen" type="ColorRect" parent="." groups=["window_xy"]]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5)
 
 [node name="Gradient" type="TextureRect" parent="." groups=["window_xy"]]
 layout_mode = 1
@@ -285,10 +295,25 @@ layout_mode = 2
 size_flags_horizontal = 0
 theme_override_constants/separation = 16
 vertical = true
+script = ExtResource("6_s0rbu")
 
 [node name="Title" type="Label" parent="Options/BoxContainer/Menus/Main__Video"]
 layout_mode = 2
 text = "Video"
+
+[node name="Preset" type="VBoxContainer" parent="Options/BoxContainer/Menus/Main__Video"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PresetText" type="Button" parent="Options/BoxContainer/Menus/Main__Video/Preset"]
+layout_mode = 2
+theme = ExtResource("5_ncmyp")
+button_mask = 0
+text = "Preset"
+alignment = 0
+
+[node name="OptionButton" type="OptionButton" parent="Options/BoxContainer/Menus/Main__Video/Preset"]
+layout_mode = 2
 
 [node name="Main__Audio" type="BoxContainer" parent="Options/BoxContainer/Menus"]
 layout_mode = 2
@@ -321,8 +346,8 @@ max_value = 0.0
 [connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/StartButton" to="." method="on_button_mouse_clicked"]
 [connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/StartButton" to="." method="on_start_game_pressed"]
 [connection signal="mouse_entered" from="MainMenu/BoxContainer/BoxContainer/RestartButton" to="." method="on_button_mouse_entered"]
-[connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/RestartButton" to="." method="on_restart_game_pressed"]
 [connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/RestartButton" to="." method="on_button_mouse_clicked"]
+[connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/RestartButton" to="." method="on_restart_game_pressed"]
 [connection signal="mouse_entered" from="MainMenu/BoxContainer/BoxContainer/OptionsButton" to="." method="on_button_mouse_entered"]
 [connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/OptionsButton" to="." method="on_options_pressed"]
 [connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/OptionsButton" to="." method="on_button_mouse_clicked"]
@@ -333,8 +358,8 @@ max_value = 0.0
 [connection signal="text_submitted" from="Console/ConsoleContainer/ConsoleInput" to="Console" method="on_text_submitted"]
 [connection signal="visibility_changed" from="Options" to="Options" method="on_visibility_changed"]
 [connection signal="button_down" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_down"]
-[connection signal="button_up" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_leave"]
 [connection signal="button_up" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_up"]
+[connection signal="button_up" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_leave"]
 [connection signal="mouse_entered" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_enter"]
 [connection signal="mouse_exited" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_leave"]
 [connection signal="mouse_entered" from="Options/BoxContainer/Menus/Main/ControlsButton" to="." method="on_button_mouse_entered"]
@@ -349,6 +374,9 @@ max_value = 0.0
 [connection signal="mouse_entered" from="Options/BoxContainer/Menus/Main/CreditsButton" to="." method="on_button_mouse_entered"]
 [connection signal="pressed" from="Options/BoxContainer/Menus/Main/CreditsButton" to="." method="on_button_mouse_clicked"]
 [connection signal="pressed" from="Options/BoxContainer/Menus/Main/CreditsButton" to="Options" method="on_button_pressed" binds= ["Main__Credits"]]
+[connection signal="button_up" from="Options/BoxContainer/Menus/Main__Video/Preset/PresetText" to="." method="on_button_mouse_clicked"]
+[connection signal="mouse_entered" from="Options/BoxContainer/Menus/Main__Video/Preset/PresetText" to="." method="on_button_mouse_entered"]
+[connection signal="pressed" from="Options/BoxContainer/Menus/Main__Video/Preset/PresetText" to="Options" method="on_button_pressed"]
 [connection signal="button_up" from="Options/BoxContainer/Menus/Main__Audio/Audio/AudioVolume" to="." method="on_button_mouse_clicked"]
 [connection signal="mouse_entered" from="Options/BoxContainer/Menus/Main__Audio/Audio/AudioVolume" to="." method="on_button_mouse_entered"]
 [connection signal="pressed" from="Options/BoxContainer/Menus/Main__Audio/Audio/AudioVolume" to="Options" method="on_button_pressed"]

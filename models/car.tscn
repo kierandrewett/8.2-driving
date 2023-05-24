@@ -354,8 +354,6 @@ particles_anim_loop = true
 material = SubResource("StandardMaterial3D_msl52")
 
 [node name="Car" type="CharacterBody3D"]
-slide_on_ceiling = false
-wall_min_slide_angle = 0.0
 script = ExtResource("2_f1o5c")
 
 [node name="Camera" type="Camera3D" parent="."]

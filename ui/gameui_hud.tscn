@@ -1,6 +1,49 @@
-[gd_scene load_steps=4 format=3 uid="uid://bq78olvb0okvp"]
+[gd_scene load_steps=10 format=3 uid="uid://bq78olvb0okvp"]
 
 [ext_resource type="Script" path="res://ui/gameui_hud.gd" id="1_b6wsj"]
+[ext_resource type="Texture2D" uid="uid://b1mr4xkvjaift" path="res://textures/ui/traffic_light.png" id="2_t7jr5"]
+
+[sub_resource type="Animation" id="Animation_iteyp"]
+resource_name = "lights"
+length = 1.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../MarginContainer/LightsContainer/NinePatchRect:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 0.8, 1, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_btvli"]
+_data = {
+"lights": SubResource("Animation_iteyp")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3l4fb"]
+bg_color = Color(0.811765, 0.176471, 0.176471, 1)
+corner_radius_top_left = 36
+corner_radius_top_right = 36
+corner_radius_bottom_right = 36
+corner_radius_bottom_left = 36
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3j7t0"]
+bg_color = Color(0.85098, 0.576471, 0.129412, 1)
+corner_radius_top_left = 36
+corner_radius_top_right = 36
+corner_radius_bottom_right = 36
+corner_radius_bottom_left = 36
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f0kaa"]
+bg_color = Color(0, 0.611765, 0.313726, 1)
+corner_radius_top_left = 36
+corner_radius_top_right = 36
+corner_radius_bottom_right = 36
+corner_radius_bottom_left = 36
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_exlhh"]
 content_margin_left = 2.0
@@ -29,6 +72,15 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_b6wsj")
 
+[node name="LightsAnimPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../MarginContainer")
+autoplay = "lights"
+playback_process_mode = 0
+speed_scale = 2.0
+libraries = {
+"": SubResource("AnimationLibrary_btvli")
+}
+
 [node name="MarginContainer" type="MarginContainer" parent="." groups=["window_xy"]]
 layout_mode = 1
 anchors_preset = 15
@@ -40,6 +92,54 @@ theme_override_constants/margin_left = 24
 theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 24
+
+[node name="LightsContainer" type="BoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+alignment = 2
+vertical = true
+
+[node name="NinePatchRect" type="NinePatchRect" parent="MarginContainer/LightsContainer"]
+custom_minimum_size = Vector2(140, 68)
+layout_mode = 2
+texture = ExtResource("2_t7jr5")
+region_rect = Rect2(0, 0, 100, 100)
+patch_margin_left = 24
+patch_margin_top = 24
+patch_margin_right = 24
+patch_margin_bottom = 24
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/LightsContainer/NinePatchRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 22
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 22
+theme_override_constants/margin_bottom = 22
+
+[node name="BoxContainer" type="BoxContainer" parent="MarginContainer/LightsContainer/NinePatchRect/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="RedLight" type="Panel" parent="MarginContainer/LightsContainer/NinePatchRect/MarginContainer/BoxContainer"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3l4fb")
+
+[node name="AmberLight" type="Panel" parent="MarginContainer/LightsContainer/NinePatchRect/MarginContainer/BoxContainer"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3j7t0")
+
+[node name="GreenLight" type="Panel" parent="MarginContainer/LightsContainer/NinePatchRect/MarginContainer/BoxContainer"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_f0kaa")
 
 [node name="ProgressContainer" type="AspectRatioContainer" parent="MarginContainer"]
 layout_mode = 2

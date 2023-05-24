@@ -9,14 +9,18 @@ func _on_body_entered(node):
 			level_ended = true
 			hit_node = node
 			
-			GameUI.on_start_game_pressed()
-
-			GameUI.preload_map(len(GameUI.maps_loaded))
+			GameUI.visible = true
+			
+			print(GameUI.current_map_index, GameUI.maps_loaded)
 			
 			if GameUI.current_map_index + 1 >= len(GameUI.maps_loaded):
+				print("game complete")
 				GameUI.on_game_completed()
 			else:
+				print("loading next map[]")
 				GameUI.goto_map(GameUI.current_map_index + 1, false)
+				if GameUI.current_map_index + 1 < len(GameUI.maps_loaded):
+					GameUI.preload_map(GameUI.current_map_index + 1)
 				
 			level_ended = false
 			hit_node = null

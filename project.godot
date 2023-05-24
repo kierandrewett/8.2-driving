@@ -29,10 +29,6 @@ NavMeshes="*res://scripts/nav_meshes.gd"
 Maps="*res://scripts/maps.gd"
 Utils="*res://scripts/utils.gd"
 
-[debug]
-
-settings/stdout/print_fps=true
-
 [display]
 
 window/size/viewport_width=1280

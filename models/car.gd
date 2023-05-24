@@ -80,15 +80,9 @@ func reset_camera_init():
 	camera.position.x -= 1
 
 func _ready():
-	GameUI.render_roads()
-	
 	if GameUI.visible:
 		reset_camera_init()
 		autopilot = true
-
-	var all_road_nodes = []
-	
-	Utils.get_all_nodes_by_name(get_tree().root, "RoadLevel", all_road_nodes)
 
 	var car_shape = get_node("/root/Car/Collision").shape.size
 	
@@ -147,7 +141,7 @@ func reset():
 	
 	reset_camera()
 	
-	position.x = 0
+	position = Vector3.ZERO
 	current_lane = 0
 	
 	Sounds.stop_some_sounds(["engine", "engine_accel", "indicator"])
@@ -305,7 +299,7 @@ func _process(delta):
 
 func _physics_process(delta):
 	var collision = get_slide_collision(get_slide_collision_count() - 1) if get_slide_collision_count() else null
-	
+
 	if collision:
 		if !crashed and !collisions.has(collision.get_collider_rid()):
 			collisions.append(collision.get_collider_rid())

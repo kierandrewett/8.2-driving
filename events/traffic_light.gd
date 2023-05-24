@@ -1,8 +1,11 @@
 extends Node3D
 
 @onready var car: CharacterBody3D = get_node("/root/Car")
+@onready var lights_hud: BoxContainer = get_node("/root/GameUIHud/MarginContainer/LightsContainer")
 
 var light_brightness = 5
+
+var car_in_prox = false
 
 var current_state = "green"
 
@@ -16,17 +19,22 @@ func _ready():
 		light.get_node("RedLight").light_energy = 0
 	
 	get_node("PointArea").connect("body_entered", Callable(self, "on_car_pass_lights"))
+	get_node("LightHUDArea").connect("body_entered", Callable(self, "on_car_enter_lights_prox"))
+	get_node("LightHUDArea").connect("body_exited", Callable(self, "on_car_leave_lights_prox"))
 	
 	pass
 	
 func create_timer(duration):
 	var t = Timer.new()
 	t.wait_time = duration
+	t.one_shot = true
+	t.process_callback = Timer.TIMER_PROCESS_PHYSICS
 	t.autostart = true
-	get_tree().root.add_child(t)
+	GameUI.map_loaded.add_child(t)
 	
 	t.timeout.connect(func ():
-		t.queue_free()	
+		t.queue_free()
+		GameUI.traffic_lights_process_timer = null
 	)
 	
 	return t
@@ -41,13 +49,23 @@ func _process(delta):
 		return
 	
 	var first_light = get_lights()[0]
-	
+
 	if first_light.get_node("AmberLight").light_energy == light_brightness:
 		current_state = "amber"
 	elif first_light.get_node("RedLight").light_energy == light_brightness:
 		current_state = "red"
 	else:
 		current_state = "green"
+	
+	lights_hud.visible = car_in_prox
+		
+	var red_light = lights_hud.get_node("NinePatchRect/MarginContainer/BoxContainer/RedLight")
+	var amber_light = lights_hud.get_node("NinePatchRect/MarginContainer/BoxContainer/AmberLight")
+	var green_light = lights_hud.get_node("NinePatchRect/MarginContainer/BoxContainer/GreenLight")
+	
+	red_light.modulate.a = 1 if current_state == "red" else 0
+	amber_light.modulate.a = 1 if current_state == "amber" else 0
+	green_light.modulate.a = 1 if current_state == "green" else 0
 	
 	if GameUI.traffic_lights_process_timer:
 		return
@@ -118,3 +136,15 @@ func on_car_pass_lights(body: CharacterBody3D):
 			body.deduct_points(5)
 		else:
 			body.add_points(30)
+
+func on_car_enter_lights_prox(body: CharacterBody3D):
+	if body.name == "Car" and body is CharacterBody3D and get_node("LightHUDArea").overlaps_body(get_node("/root/Car")):
+		car_in_prox = true
+		var animation: AnimationPlayer = get_node("/root/GameUIHud/LightsAnimPlayer")
+		animation.play("lights")
+		
+func on_car_leave_lights_prox(body: CharacterBody3D):
+	if body.name == "Car" and body is CharacterBody3D:
+		car_in_prox = false
+		var animation: AnimationPlayer = get_node("/root/GameUIHud/LightsAnimPlayer")
+		animation.stop()

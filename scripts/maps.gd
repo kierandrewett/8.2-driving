@@ -3,7 +3,7 @@ extends Node
 func _ready():
 	pass
 
-func load(path, offset = 0):
+func load(path, offset = 0):	
 	if !ResourceLoader.exists(path):
 		print("Resource at '%s' not found." % path)
 		return null
@@ -14,6 +14,9 @@ func load(path, offset = 0):
 	
 	if offset != 0:
 		initted.position.z -= offset
+	
+	if get_tree().root.get_node_or_null("blank") == null:
+		initted.visible = false
 	
 	return initted
 	
@@ -26,33 +29,10 @@ func fixup_map(node = null):
 	if node:
 		var all_road_nodes = []
 		
-		Utils.get_all_nodes_by_name(node, "RoadContainer", all_road_nodes)
 		Utils.get_all_nodes_by_name(node, "RoadLevel", all_road_nodes)
+		Utils.get_all_nodes_by_name(node, "RoadContainer", all_road_nodes)
 
 		var car_shape = get_node("/root/Car/Collision").shape.size
 
-		for road in all_road_nodes:
-			# In our map, we add the road in so we know where to put the obstacles
-			# Since the obstacles are a child of the Road scene, we need to move 
-			# the obstacles outside and then remove the road itself.
-			# Removing the road is fine, because we just add it back in the actual game
-			if road.get_parent().name == "Road" and road.name == "RoadLevel":
-				var parent = road.get_parent()
-				var node_to_move = road
-				parent.remove_child(node_to_move)
-				parent.get_parent().add_child(node_to_move)
-				parent.queue_free()
-				
-			if road.name == "RoadContainer" and road.get_parent().name == "Road" and road.get_parent().get_parent().name == "Level" or road.get_parent().get_parent().name.begins_with("@Level@"):
-				road.get_parent().visible = false
-
-			if "position" in road and road.name == "RoadLevel" or road.name == "RoadContainer":
-				road.position.y -= car_shape.x * 2
-				road.position.x += car_shape.z * 2
-				
-		# This ensures any remains from testing the road when making the map is gone
-		var all_level_children = []
-		Utils.get_all_nodes(node.get_node("Road"), all_level_children)
-		for child in all_level_children:
-			if "disabled" in child:
-				child.disabled = true
+		node.position.y -= car_shape.x * 2
+		node.position.x += car_shape.z * 2

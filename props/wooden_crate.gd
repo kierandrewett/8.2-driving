@@ -20,9 +20,11 @@ func destroy(car: CharacterBody3D = null):
 			get_tree().create_timer(2).timeout.connect(func ():
 				if car:
 					if !car.crashed:
-						node.queue_free()
+						if node != null:
+							node.queue_free()
 				else:
-					node.queue_free()
+					if node != null:
+						node.queue_free()
 			)
 		
 		visible = false
