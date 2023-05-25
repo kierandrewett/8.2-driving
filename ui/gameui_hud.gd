@@ -10,6 +10,8 @@ var jiggy_tween: Tween = null
 
 var points_int = 0
 
+var played_engine_anim = false
+
 func _ready():
 	jiggy_tween = get_tree().create_tween()
 	
@@ -50,6 +52,11 @@ func _process(delta):
 	
 	if !car:
 		return
+	
+	get_node("MarginContainer/EngineContainer").visible = car.get_node("FireParticle").amount >= 15 and car.get_node("FireParticle").emitting and !car.autopilot and !GameUI.visible
+	if !played_engine_anim and get_node("MarginContainer/EngineContainer").visible:
+		played_engine_anim = true
+		get_node("MarginContainer/EngineContainer/AnimationPlayer").play("flash")
 	
 	speedometer.visible = !GameUI.visible
 	progress.visible = !car.autopilot

@@ -73,37 +73,31 @@ func _process(delta):
 	var chance = randf_range(0, 1000)
 	
 	# Must be between 300-400
-	if chance >= 390 and chance <= 400:
+	if chance >= 396 and chance <= 400:
 		var distance_from_player_to_node = self.global_position.distance_to(car.global_position)
 
-		if distance_from_player_to_node >= 30:
+		if distance_from_player_to_node >= 50:
 			return
-		
-		print("set GOT LIGHTS")
-		
+
 		var lights = get_lights()
 		
 		for light in lights:
 			light.get_node("GreenLight").light_energy = 0
 			light.get_node("AmberLight").light_energy = 0
 			light.get_node("RedLight").light_energy = 0
-			print("reset lights")
 		
 		for light in lights:
 			light.get_node("AmberLight").light_energy = light_brightness
-			print("set amber")
 		
 		GameUI.traffic_lights_process_timer = create_timer(2)
 		GameUI.traffic_lights_process_timer.timeout.connect(func ():			
 			for light in lights:
-				print("set red")
 				light.get_node("AmberLight").light_energy = 0
 				light.get_node("RedLight").light_energy = light_brightness
 					
 			GameUI.traffic_lights_process_timer = create_timer(round(randf_range(8, 14)))
 			GameUI.traffic_lights_process_timer.timeout.connect(func ():
 				for light in lights:
-					print("set amber")
 					light.get_node("RedLight").light_energy = 0
 					light.get_node("AmberLight").light_energy = light_brightness
 				
@@ -111,7 +105,6 @@ func _process(delta):
 				
 				GameUI.traffic_lights_process_timer.timeout.connect(func ():
 					for light in lights:
-						print("set green")
 						light.get_node("AmberLight").light_energy = 0
 						light.get_node("GreenLight").light_energy = light_brightness
 						
@@ -128,12 +121,8 @@ func _process(delta):
 	
 func on_car_pass_lights(body: CharacterBody3D):
 	if body.name == "Car" and body is CharacterBody3D and get_node("PointArea").overlaps_body(get_node("/root/Car")):
-		print("on_car_pass_lights", body)
-		
 		if current_state == "red":
 			body.deduct_points(20)
-		elif current_state == "amber":
-			body.deduct_points(5)
 		else:
 			body.add_points(30)
 

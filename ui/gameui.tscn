@@ -1,6 +1,7 @@
-[gd_scene load_steps=18 format=3 uid="uid://bouxkwjcpvs4a"]
+[gd_scene load_steps=19 format=3 uid="uid://bouxkwjcpvs4a"]
 
 [ext_resource type="Script" path="res://ui/gameui.gd" id="1_5brjb"]
+[ext_resource type="Texture2D" uid="uid://b8dra3fekgodk" path="res://textures/logo.png" id="2_myikq"]
 [ext_resource type="Script" path="res://ui/gameui_console.gd" id="2_yb7b5"]
 [ext_resource type="Script" path="res://ui/gameui_options.gd" id="3_yj7i2"]
 [ext_resource type="Texture2D" uid="uid://buxkgo2ucrw04" path="res://textures/icons/arrow_back.png" id="4_cd3is"]
@@ -82,7 +83,12 @@ theme_override_constants/separation = 24
 alignment = 1
 vertical = true
 
+[node name="TextureRect" type="TextureRect" parent="MainMenu/BoxContainer"]
+layout_mode = 2
+texture = ExtResource("2_myikq")
+
 [node name="Label" type="Label" parent="MainMenu/BoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_font_sizes/font_size = 64
@@ -343,23 +349,23 @@ min_value = -80.0
 max_value = 0.0
 
 [connection signal="mouse_entered" from="MainMenu/BoxContainer/BoxContainer/StartButton" to="." method="on_button_mouse_entered"]
-[connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/StartButton" to="." method="on_button_mouse_clicked"]
 [connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/StartButton" to="." method="on_start_game_pressed"]
+[connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/StartButton" to="." method="on_button_mouse_clicked"]
 [connection signal="mouse_entered" from="MainMenu/BoxContainer/BoxContainer/RestartButton" to="." method="on_button_mouse_entered"]
-[connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/RestartButton" to="." method="on_button_mouse_clicked"]
 [connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/RestartButton" to="." method="on_restart_game_pressed"]
+[connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/RestartButton" to="." method="on_button_mouse_clicked"]
 [connection signal="mouse_entered" from="MainMenu/BoxContainer/BoxContainer/OptionsButton" to="." method="on_button_mouse_entered"]
 [connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/OptionsButton" to="." method="on_options_pressed"]
 [connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/OptionsButton" to="." method="on_button_mouse_clicked"]
 [connection signal="mouse_entered" from="MainMenu/BoxContainer/BoxContainer/QuitButton" to="." method="on_button_mouse_entered"]
-[connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/QuitButton" to="." method="on_quit_pressed"]
 [connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/QuitButton" to="." method="on_button_mouse_clicked"]
+[connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/QuitButton" to="." method="on_quit_pressed"]
 [connection signal="gui_input" from="Console/ConsoleContainer/ConsoleInput" to="Console" method="on_input"]
 [connection signal="text_submitted" from="Console/ConsoleContainer/ConsoleInput" to="Console" method="on_text_submitted"]
 [connection signal="visibility_changed" from="Options" to="Options" method="on_visibility_changed"]
 [connection signal="button_down" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_down"]
-[connection signal="button_up" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_up"]
 [connection signal="button_up" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_leave"]
+[connection signal="button_up" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_up"]
 [connection signal="mouse_entered" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_enter"]
 [connection signal="mouse_exited" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_leave"]
 [connection signal="mouse_entered" from="Options/BoxContainer/Menus/Main/ControlsButton" to="." method="on_button_mouse_entered"]
