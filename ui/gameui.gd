@@ -134,6 +134,7 @@ func on_start_game_pressed(restart = false):
 		road_index = 0
 		
 	self.visible = false
+	GameUI.current_map_index = 0
 
 func on_restart_game_pressed():
 	get_node("Screen").visible = true
@@ -167,12 +168,18 @@ func set_button_text(text = "Start Game"):
 
 func on_game_completed():
 	var car = get_node("/root/Car")
-	game_ended = true
-	visible = true
+	await get_tree().process_frame
 	car.autopilot = true
 	car.crashed = true
 	car.velocity = Vector3.ZERO
+	await get_tree().process_frame
+	await get_tree().process_frame
+	game_ended = true
 	get_node("MainMenu/BoxContainer/BoxContainer/StartButton").visible = false
+	game_ended = true
+	await get_tree().process_frame
+	await get_tree().process_frame
+	visible = true
 
 func preload_map(id, reloading = false, map_index = -1):
 	var map_path = "res://maps/dg_%02d.tscn" % (id + 1)

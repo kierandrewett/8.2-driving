@@ -67,7 +67,7 @@ func _process(delta):
 	speedometer.text = "%d mph" % [car.get_speed_mph()]
 	
 	if GameUI.map_loaded:
-		var level_start = Utils.get_node_by_name(GameUI.maps_loaded[GameUI.current_map_index - 1], "LevelEndBrush")
+		var level_start = Utils.get_node_by_name(GameUI.map_loaded, "LevelStartBrush")
 		var level_end = Utils.get_node_by_name(GameUI.map_loaded, "LevelEndBrush")
 			
 		if !level_end or !level_start:

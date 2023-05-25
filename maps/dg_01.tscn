@@ -318,7 +318,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0220371, 0.559099, -30.111
 transform = Transform3D(-2.71011e-09, 0, 0.062, 0, 0.062, 0, -0.062, 0, -2.71011e-09, -4.47066, -0.108206, 8.96089)
 
 [node name="CSGBox3D" type="CSGBox3D" parent="RoadLevel"]
-transform = Transform3D(-2.71011e-09, 0, 0.062, 0, 0.062, 0, -0.062, 0, -2.71011e-09, 1.88727, -0.108206, -446.359)
+transform = Transform3D(-2.71011e-09, 0, 0.062, 0, 0.062, 0, -0.062, 0, -2.71011e-09, 1.88727, -0.108206, -441.948)
 use_collision = true
 size = Vector3(1, 150.138, 406.174)
 material = SubResource("StandardMaterial3D_4yufv")
