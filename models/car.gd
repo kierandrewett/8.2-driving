@@ -328,6 +328,9 @@ func pretend_crash(collision = null):
 	cam_pos_tween.tween_property(camera, "position:z", crashed_z, 3).set_ease(Tween.EASE_OUT)
 
 func _physics_process(delta):
+	if GameUI.game_ended:
+		return
+	
 	var collision = get_slide_collision(get_slide_collision_count() - 1) if get_slide_collision_count() else null
 
 	if get_node("FireParticle").emitting and get_node("FireParticle").amount >= 40:
