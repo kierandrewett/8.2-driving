@@ -49,8 +49,6 @@ func render_new_road(on_record = true):
 		
 	var bounds: Area3D = road_chunk.get_node("RoadContainer/AreaBounds")
 	bounds.body_exited.connect(func (body):
-		print(body)
-		
 		if body.name == self.name:
 			render_new_road()
 			road_car_is_on = road_car_is_on + 1
@@ -79,26 +77,13 @@ func on_window_resize():
 	for node in get_tree().get_nodes_in_group("window_y"):
 		node.set_size(Vector2(node.get_size().x, y))
 
-func on_window_blur():
-	old_bus_volume = AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master"))
-	
-	if visible == false:
-		await get_tree().create_timer(0.1).timeout
-		if visible == false:
-			AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), -80)
-			visible = true
-		
-func on_window_focus():
-	print(old_bus_volume)
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), old_bus_volume)
-
 func _process(delta):
 	if Input.is_action_just_pressed("open_gameui"):
 		if get_node("Options").visible:
 			on_options_pressed()
 		
 		var car = get_node("/root/Car")
-		if !car.autopilot and !car.crashed:
+		if !car.autopilot and !car.crashed and !game_ended:
 			self.visible = !self.visible
 	
 	if get_node_or_null("/root/Car") and !get_node_or_null("/root/Car").autopilot and get_node_or_null("/root/Car").current_state != "complete":
@@ -149,6 +134,7 @@ func on_start_game_pressed(restart = false):
 		road_index = 0
 		
 	self.visible = false
+	GameUI.current_map_index = 0
 
 func on_restart_game_pressed():
 	get_node("Screen").visible = true
@@ -182,12 +168,18 @@ func set_button_text(text = "Start Game"):
 
 func on_game_completed():
 	var car = get_node("/root/Car")
-	visible = true
+	await get_tree().process_frame
 	car.autopilot = true
 	car.crashed = true
-	game_ended = true
 	car.velocity = Vector3.ZERO
+	await get_tree().process_frame
+	await get_tree().process_frame
+	game_ended = true
 	get_node("MainMenu/BoxContainer/BoxContainer/StartButton").visible = false
+	game_ended = true
+	await get_tree().process_frame
+	await get_tree().process_frame
+	visible = true
 
 func preload_map(id, reloading = false, map_index = -1):
 	var map_path = "res://maps/dg_%02d.tscn" % (id + 1)
@@ -201,7 +193,6 @@ func preload_map(id, reloading = false, map_index = -1):
 			
 			if index <= 0:
 				var lst = Utils.get_node_by_name(map, "LevelStartBrush")
-				print(lst.position.z)
 				map_start_positions.insert(index, lst.position.z)
 			else:
 				var lst = Utils.get_node_by_name(maps_loaded[index - 1], "LevelEndBrush")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cu5340max5ala"]
+[gd_scene load_steps=14 format=3 uid="uid://cu5340max5ala"]
 
 [ext_resource type="Script" path="res://props/wooden_crate.gd" id="1_4g8fb"]
 [ext_resource type="Texture2D" uid="uid://d6fcst7tbcc5" path="res://textures/wood.jpg" id="2_ylnqe"]
@@ -96,10 +96,6 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_joyxl")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p1ut2"]
-transparency = 1
-albedo_color = Color(1, 0, 1, 0.443137)
-
 [node name="WoodenCrate" type="Area3D"]
 collision_layer = 2
 script = ExtResource("1_4g8fb")
@@ -117,11 +113,6 @@ transform = Transform3D(0, -0.914898, -0.0444019, -0.05, 0, 7.45058e-09, -5.9604
 material_override = SubResource("StandardMaterial3D_j77t6")
 mesh = SubResource("ArrayMesh_1vepx")
 skeleton = NodePath("")
-
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
-visible = false
-size = Vector3(2.1, 2.1, 2.1)
-material = SubResource("StandardMaterial3D_p1ut2")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

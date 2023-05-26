@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://bg8dbf28nauq0"]
+
+[ext_resource type="PackedScene" uid="uid://ughrwqeyetdj" path="res://models/human01.tscn" id="1_kmnxp"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qbgyn"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_12qx3"]
+transparency = 1
+albedo_color = Color(0, 1, 1, 0.34902)
+
+[node name="people_holding_glass" type="Node3D"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.689254, 2.27674, 1.88797)
+use_collision = true
+size = Vector3(0.491056, 4.80347, 6.67136)
+material = SubResource("StandardMaterial3D_qbgyn")
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(0.021, 0, 0, 0, 0.021, 0, 0, 0, 0.021, 0.382725, 0, -0.458115)
+
+[node name="human01" parent="Node3D" instance=ExtResource("1_kmnxp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="human02" parent="Node3D" instance=ExtResource("1_kmnxp")]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -40.3764, 0, 261.995)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Node3D"]
+transform = Transform3D(47.619, 0, 0, 0, 47.619, 0, 0, 0, 47.619, -18.225, 118.545, 129.548)
+size = Vector3(0.119804, 2.859, 4.29817)
+material = SubResource("StandardMaterial3D_12qx3")

@@ -297,32 +297,47 @@ func _process(delta):
 	if GameUI.visible and !autopilot:
 		return
 
+func pretend_crash(collision = null):
+	var has_collision = true
+	
+	if collision != null:
+		has_collision = !collisions.has(collision.get_collider_rid())
+	
+	if !crashed and has_collision:
+		if collision != null:
+			collisions.append(collision.get_collider_rid())
+		print("Crashed")
+		add_vehicle_damage(last_known_velocity.length())
+		crashed = true
+		on_end_game("crash")
+		play_car_collision()
+		Sounds.stop_some_sounds(["engine", "engine_accel", "indicator"])
+
+	velocity = Vector3.ZERO
+
+	if fov_tween:
+		fov_tween.kill()
+		fov_tween = create_tween()
+	
+	fov_tween.tween_property(camera, "fov", 45, 0.1)
+	
+	if cam_pos_tween:
+		cam_pos_tween.kill()
+		cam_pos_tween = get_tree().create_tween()
+
+	cam_pos_tween.tween_property(camera, "position:z", crashed_z, 3).set_ease(Tween.EASE_OUT)
+
 func _physics_process(delta):
+	if GameUI.game_ended:
+		return
+	
 	var collision = get_slide_collision(get_slide_collision_count() - 1) if get_slide_collision_count() else null
 
+	if get_node("FireParticle").emitting and get_node("FireParticle").amount >= 40:
+		pretend_crash()
+
 	if collision:
-		if !crashed and !collisions.has(collision.get_collider_rid()):
-			collisions.append(collision.get_collider_rid())
-			print("Crashed")
-			add_vehicle_damage(last_known_velocity.length())
-			crashed = true
-			on_end_game("crash")
-			play_car_collision()
-			Sounds.stop_some_sounds(["engine", "engine_accel", "indicator"])
-
-		velocity = Vector3.ZERO
-
-		if fov_tween:
-			fov_tween.kill()
-			fov_tween = create_tween()
-		
-		fov_tween.tween_property(camera, "fov", 45, 0.1)
-		
-		if cam_pos_tween:
-			cam_pos_tween.kill()
-			cam_pos_tween = get_tree().create_tween()
-	
-		cam_pos_tween.tween_property(camera, "position:z", crashed_z, 3).set_ease(Tween.EASE_OUT)
+		pretend_crash(collision)
 	else:
 		slomo_tween = create_tween() 
 		slomo_tween.tween_property(Engine, "time_scale", 0.01 if GameUI.visible and !autopilot and current_state != "complete" else 1.0, 0.1)

@@ -36,7 +36,7 @@ window/size/viewport_height=720
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/simplegrasstextured/plugin.cfg", "res://addons/rigid-collision-generator/plugin.cfg", "res://addons/AutoMat/plugin.cfg")
+enabled=PackedStringArray("res://addons/AutoMat/plugin.cfg", "res://addons/rigid-collision-generator/plugin.cfg", "res://addons/simplegrasstextured/plugin.cfg")
 
 [input]
 
