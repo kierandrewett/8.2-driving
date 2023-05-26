@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://ui/gameui_console.gd" id="2_yb7b5"]
 [ext_resource type="Script" path="res://ui/gameui_options.gd" id="3_yj7i2"]
 [ext_resource type="Texture2D" uid="uid://buxkgo2ucrw04" path="res://textures/icons/arrow_back.png" id="4_cd3is"]
-[ext_resource type="Theme" uid="uid://j50owx3xj2xu" path="res://ui/gameui.tres" id="5_ncmyp"]
+[ext_resource type="Theme" uid="uid://bxlggl8tnesmb" path="res://ui/gameui.tres" id="5_ncmyp"]
 [ext_resource type="Script" path="res://ui/gameui_options_video.gd" id="6_s0rbu"]
 
 [sub_resource type="Gradient" id="Gradient_m6yfn"]
@@ -290,6 +290,38 @@ vertical = true
 layout_mode = 2
 text = "Controls"
 
+[node name="AccelerateButton" type="Button" parent="Options/BoxContainer/Menus/Main__Controls"]
+layout_mode = 2
+theme = ExtResource("5_ncmyp")
+disabled = true
+button_mask = 0
+text = "Accelerate                    Shift"
+alignment = 0
+
+[node name="BrakeButton" type="Button" parent="Options/BoxContainer/Menus/Main__Controls"]
+layout_mode = 2
+theme = ExtResource("5_ncmyp")
+disabled = true
+button_mask = 0
+text = "Brake                             Space"
+alignment = 0
+
+[node name="LeftButton" type="Button" parent="Options/BoxContainer/Menus/Main__Controls"]
+layout_mode = 2
+theme = ExtResource("5_ncmyp")
+disabled = true
+button_mask = 0
+text = "Move left                      A"
+alignment = 0
+
+[node name="RightButton" type="Button" parent="Options/BoxContainer/Menus/Main__Controls"]
+layout_mode = 2
+theme = ExtResource("5_ncmyp")
+disabled = true
+button_mask = 0
+text = "Move right                   D"
+alignment = 0
+
 [node name="Main__Video" type="BoxContainer" parent="Options/BoxContainer/Menus"]
 layout_mode = 2
 size_flags_horizontal = 0
@@ -342,15 +374,35 @@ layout_mode = 2
 min_value = -80.0
 max_value = 0.0
 
+[node name="Main__Credits" type="BoxContainer" parent="Options/BoxContainer/Menus"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 16
+vertical = true
+
+[node name="Title" type="Label" parent="Options/BoxContainer/Menus/Main__Credits"]
+layout_mode = 2
+text = "Credits"
+
+[node name="Credits" type="Button" parent="Options/BoxContainer/Menus/Main__Credits"]
+layout_mode = 2
+theme = ExtResource("5_ncmyp")
+disabled = true
+button_mask = 0
+text = "Sounds and audio: Freesound.org
+Assets and models: SketchFab and TurboSquid
+Textures: Material Maker and Freepik.com"
+alignment = 0
+
 [connection signal="mouse_entered" from="MainMenu/BoxContainer/BoxContainer/StartButton" to="." method="on_button_mouse_entered"]
 [connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/StartButton" to="." method="on_button_mouse_clicked"]
 [connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/StartButton" to="." method="on_start_game_pressed"]
 [connection signal="mouse_entered" from="MainMenu/BoxContainer/BoxContainer/RestartButton" to="." method="on_button_mouse_entered"]
-[connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/RestartButton" to="." method="on_button_mouse_clicked"]
 [connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/RestartButton" to="." method="on_restart_game_pressed"]
+[connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/RestartButton" to="." method="on_button_mouse_clicked"]
 [connection signal="mouse_entered" from="MainMenu/BoxContainer/BoxContainer/OptionsButton" to="." method="on_button_mouse_entered"]
-[connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/OptionsButton" to="." method="on_options_pressed"]
 [connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/OptionsButton" to="." method="on_button_mouse_clicked"]
+[connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/OptionsButton" to="." method="on_options_pressed"]
 [connection signal="mouse_entered" from="MainMenu/BoxContainer/BoxContainer/QuitButton" to="." method="on_button_mouse_entered"]
 [connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/QuitButton" to="." method="on_quit_pressed"]
 [connection signal="pressed" from="MainMenu/BoxContainer/BoxContainer/QuitButton" to="." method="on_button_mouse_clicked"]
@@ -358,8 +410,8 @@ max_value = 0.0
 [connection signal="text_submitted" from="Console/ConsoleContainer/ConsoleInput" to="Console" method="on_text_submitted"]
 [connection signal="visibility_changed" from="Options" to="Options" method="on_visibility_changed"]
 [connection signal="button_down" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_down"]
-[connection signal="button_up" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_up"]
 [connection signal="button_up" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_leave"]
+[connection signal="button_up" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_up"]
 [connection signal="mouse_entered" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_enter"]
 [connection signal="mouse_exited" from="Options/BoxContainer/VBoxContainer/BackButton" to="Options" method="on_back_button_mouse_leave"]
 [connection signal="mouse_entered" from="Options/BoxContainer/Menus/Main/ControlsButton" to="." method="on_button_mouse_entered"]
@@ -374,6 +426,18 @@ max_value = 0.0
 [connection signal="mouse_entered" from="Options/BoxContainer/Menus/Main/CreditsButton" to="." method="on_button_mouse_entered"]
 [connection signal="pressed" from="Options/BoxContainer/Menus/Main/CreditsButton" to="." method="on_button_mouse_clicked"]
 [connection signal="pressed" from="Options/BoxContainer/Menus/Main/CreditsButton" to="Options" method="on_button_pressed" binds= ["Main__Credits"]]
+[connection signal="mouse_entered" from="Options/BoxContainer/Menus/Main__Controls/AccelerateButton" to="." method="on_button_mouse_entered"]
+[connection signal="pressed" from="Options/BoxContainer/Menus/Main__Controls/AccelerateButton" to="." method="on_button_mouse_clicked"]
+[connection signal="pressed" from="Options/BoxContainer/Menus/Main__Controls/AccelerateButton" to="Options" method="on_button_pressed"]
+[connection signal="mouse_entered" from="Options/BoxContainer/Menus/Main__Controls/BrakeButton" to="." method="on_button_mouse_entered"]
+[connection signal="pressed" from="Options/BoxContainer/Menus/Main__Controls/BrakeButton" to="." method="on_button_mouse_clicked"]
+[connection signal="pressed" from="Options/BoxContainer/Menus/Main__Controls/BrakeButton" to="Options" method="on_button_pressed"]
+[connection signal="mouse_entered" from="Options/BoxContainer/Menus/Main__Controls/LeftButton" to="." method="on_button_mouse_entered"]
+[connection signal="pressed" from="Options/BoxContainer/Menus/Main__Controls/LeftButton" to="." method="on_button_mouse_clicked"]
+[connection signal="pressed" from="Options/BoxContainer/Menus/Main__Controls/LeftButton" to="Options" method="on_button_pressed"]
+[connection signal="mouse_entered" from="Options/BoxContainer/Menus/Main__Controls/RightButton" to="." method="on_button_mouse_entered"]
+[connection signal="pressed" from="Options/BoxContainer/Menus/Main__Controls/RightButton" to="." method="on_button_mouse_clicked"]
+[connection signal="pressed" from="Options/BoxContainer/Menus/Main__Controls/RightButton" to="Options" method="on_button_pressed"]
 [connection signal="button_up" from="Options/BoxContainer/Menus/Main__Video/Preset/PresetText" to="." method="on_button_mouse_clicked"]
 [connection signal="mouse_entered" from="Options/BoxContainer/Menus/Main__Video/Preset/PresetText" to="." method="on_button_mouse_entered"]
 [connection signal="pressed" from="Options/BoxContainer/Menus/Main__Video/Preset/PresetText" to="Options" method="on_button_pressed"]
@@ -381,3 +445,6 @@ max_value = 0.0
 [connection signal="mouse_entered" from="Options/BoxContainer/Menus/Main__Audio/Audio/AudioVolume" to="." method="on_button_mouse_entered"]
 [connection signal="pressed" from="Options/BoxContainer/Menus/Main__Audio/Audio/AudioVolume" to="Options" method="on_button_pressed"]
 [connection signal="value_changed" from="Options/BoxContainer/Menus/Main__Audio/Audio/AudioSlider" to="Options" method="on_volume_changed"]
+[connection signal="mouse_entered" from="Options/BoxContainer/Menus/Main__Credits/Credits" to="." method="on_button_mouse_entered"]
+[connection signal="pressed" from="Options/BoxContainer/Menus/Main__Credits/Credits" to="." method="on_button_mouse_clicked"]
+[connection signal="pressed" from="Options/BoxContainer/Menus/Main__Credits/Credits" to="Options" method="on_button_pressed"]
