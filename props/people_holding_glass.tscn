@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://bg8dbf28nauq0"]
+[gd_scene load_steps=6 format=3 uid="uid://vs6evddkx5l7"]
 
-[ext_resource type="PackedScene" uid="uid://ughrwqeyetdj" path="res://models/human01.tscn" id="1_kmnxp"]
+[ext_resource type="PackedScene" path="res://models/human01.tscn" id="1_kmnxp"]
+[ext_resource type="Script" path="res://props/people_holding_glass.gd" id="2_ya8dv"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qbgyn"]
 transparency = 1
@@ -9,6 +10,9 @@ albedo_color = Color(1, 1, 1, 0)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_12qx3"]
 transparency = 1
 albedo_color = Color(0, 1, 1, 0.34902)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lufp7"]
+size = Vector3(1, 6.21036, 4.0895)
 
 [node name="people_holding_glass" type="Node3D"]
 
@@ -31,3 +35,21 @@ transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -40.37
 transform = Transform3D(47.619, 0, 0, 0, 47.619, 0, 0, 0, 47.619, -18.225, 118.545, 129.548)
 size = Vector3(0.119804, 2.859, 4.29817)
 material = SubResource("StandardMaterial3D_12qx3")
+
+[node name="Area3D" type="Area3D" parent="."]
+script = ExtResource("2_ya8dv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.32819, 8.11865)
+shape = SubResource("BoxShape3D_lufp7")
+
+[node name="Area3D2" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -11.6167)
+script = ExtResource("2_ya8dv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.32819, 8.11865)
+shape = SubResource("BoxShape3D_lufp7")
+
+[connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]
+[connection signal="body_entered" from="Area3D2" to="Area3D2" method="_on_body_entered"]

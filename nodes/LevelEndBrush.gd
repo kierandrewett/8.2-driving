@@ -10,13 +10,14 @@ func _on_body_entered(node):
 			hit_node = node
 			
 			GameUI.visible = true
+			node.add_points(25)
 			
 			if GameUI.current_map_index + 1 >= len(GameUI.maps_loaded):
 				GameUI.on_game_completed()
 			else:
 				GameUI.goto_map(GameUI.current_map_index + 1, false)
 				if GameUI.current_map_index + 1 < len(GameUI.maps_loaded):
-					GameUI.preload_map(GameUI.current_map_index + 1)
-				
+					GameUI.preload_map(GameUI.current_map_index + 1)	
+			
 			level_ended = false
 			hit_node = null
