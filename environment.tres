@@ -8,7 +8,6 @@ sky_material = SubResource("ProceduralSkyMaterial_clanw")
 [resource]
 background_mode = 2
 sky = SubResource("Sky_nc36x")
-glow_enabled = true
 glow_blend_mode = 0
 fog_light_energy = 0.49
 fog_sky_affect = 0.0
