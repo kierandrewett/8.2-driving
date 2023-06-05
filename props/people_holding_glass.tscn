@@ -1,6 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://vs6evddkx5l7"]
+[gd_scene load_steps=6 format=3 uid="uid://bg8dbf28nauq0"]
 
-[ext_resource type="PackedScene" path="res://models/human01.tscn" id="1_kmnxp"]
+[ext_resource type="PackedScene" uid="uid://ughrwqeyetdj" path="res://models/human01.tscn" id="1_kmnxp"]
 [ext_resource type="Script" path="res://props/people_holding_glass.gd" id="2_ya8dv"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qbgyn"]

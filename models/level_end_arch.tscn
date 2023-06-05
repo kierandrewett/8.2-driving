@@ -1,7 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://d05ixyat7pr5q"]
+[gd_scene load_steps=12 format=3 uid="uid://d3dsys4t85j2l"]
 
 [ext_resource type="Script" path="res://models/level_end_arch.gd" id="1_c64hk"]
-[ext_resource type="Material" path="res://materials/grass.tres" id="1_gvrnk"]
+[ext_resource type="Material" uid="uid://sqt2qt2y61lv" path="res://materials/grass.tres" id="1_gvrnk"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_uu77g"]
 _surfaces = [{

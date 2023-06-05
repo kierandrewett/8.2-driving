@@ -354,6 +354,7 @@ particles_anim_loop = true
 material = SubResource("StandardMaterial3D_msl52")
 
 [node name="Car" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.26246)
 script = ExtResource("2_f1o5c")
 
 [node name="Camera" type="Camera3D" parent="."]
@@ -414,8 +415,7 @@ skeleton = NodePath("")
 
 [node name="FireParticle" type="GPUParticles3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.100543, -1.64667)
-emitting = false
-amount = 1
+amount = 200
 lifetime = 0.5
 randomness = 1.0
 visibility_aabb = AABB(-4, -3.36096, -4, 8, 8, 8)

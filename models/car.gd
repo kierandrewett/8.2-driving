@@ -442,11 +442,15 @@ func get_speed_kmh():
 	return get_speed_mph() * 1.609344
 			
 func deduct_points(points_to_deduct):
+	if global_position.z >= -10:
+		return
 	Sounds.play_sound("res://sounds/points/point_lost.mp3")
 	points -= points_to_deduct
 	get_node("/root/GameUIHud").set_points(points, -points_to_deduct)
 	
 func add_points(points_to_add):
+	if global_position.z >= -10:
+		return
 	Sounds.play_sound("res://sounds/points/point_gain.mp3")
 	points += points_to_add
 	get_node("/root/GameUIHud").set_points(points, points_to_add)
